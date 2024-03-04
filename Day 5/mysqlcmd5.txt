@@ -1,0 +1,463 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use acts0923
+Database changed
+mysql> Select year(hiredate),count(*)
+    -> From emp
+    -> Group by year(hiredate)
+    -> Having count(*)>=2
+    -> ;
++----------------+----------+
+| year(hiredate) | count(*) |
++----------------+----------+
+|           1981 |       10 |
+|           1982 |        2 |
++----------------+----------+
+2 rows in set (0.02 sec)
+
+mysql> Select year(hiredate),count(*)
+    -> From emp
+    -> Group by year(hiredate);
++----------------+----------+
+| year(hiredate) | count(*) |
++----------------+----------+
+|           1980 |        1 |
+|           1981 |       10 |
+|           1982 |        2 |
+|           1983 |        1 |
++----------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create table student(
+    -> sid number  primary key,
+    -> sname varchar(30) not null,
+    -> mobile number unique
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'number  primary key,
+sname varchar(30) not null,
+mobile number unique
+)' at line 2
+mysql> create table student(
+    -> sid int  primary key,
+    -> sname varchar(30) not null,
+    -> mobile int unique
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into student values(12,'Atharva',123456);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student values(12,'Atharva',123456);
+ERROR 1062 (23000): Duplicate entry '12' for key 'student.PRIMARY'
+mysql> insert into student values(13,'Atharva',123456);
+ERROR 1062 (23000): Duplicate entry '123456' for key 'student.mobile'
+mysql> insert into student values(13,'Atharva',123457);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  12 | Atharva | 123456 |
+|  13 | Atharva | 123457 |
++-----+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into student(sid,sname) values(14,'Rajan');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  12 | Atharva | 123456 |
+|  13 | Atharva | 123457 |
+|  14 | Rajan   |   NULL |
++-----+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> create table student_marks(
+    -> sid int,
+    -> cname varchar(30),
+    -> marks int,
+    -> primary key(sid,cname);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> constraint fk_sid foreign key(sid) referneces student(sid)
+    -> )
+    -> ^C
+mysql> create table student_marks(
+    -> sid int,
+    -> cname varchar(30),
+    -> marks int,
+    -> primary key(sid,cname);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> constraint fk_sid foreign key fk1(sid) referneces student(sid)
+    ->
+    -> ^C
+mysql> create table student_marks(
+    -> sid int,
+    -> cname varchar(30),
+    -> marks int,
+    -> primary key(sid,cname),
+    -> constraint fk_sid foreign key fk1(sid) references student(sid)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> drop table student_marks;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table student_marks(
+    -> sid int,
+    -> cname varchar(30),
+    -> marks int,
+    -> primary key(sid,cname),
+    -> constraint fk_sid foreign key(sid) references student(sid)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into student_marks values(1,'java',98);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`acts0923`.`student_marks`, CONSTRAINT `fk_sid` FOREIGN KEY (`sid`) REFERENCES `student` (`sid`))
+mysql> insert into student_marks values(12,'java',98);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into student_marks values(12,'java',98);
+ERROR 1062 (23000): Duplicate entry '12-java' for key 'student_marks.PRIMARY'
+mysql> insert into student_marks values(12,'c++',98);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(12,'.net',98);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(13,'.net',88);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(13,'java',88);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student_marks;
++-----+-------+-------+
+| sid | cname | marks |
++-----+-------+-------+
+|  12 | .net  |    98 |
+|  12 | c++   |    98 |
+|  12 | java  |    98 |
+|  13 | .net  |    88 |
+|  13 | java  |    88 |
++-----+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table course(
+    -> cname varchar(30) primary key,
+    -> duration int,
+    -> fname varchar(30));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> drop table student_marks;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into course values('java',120,'Madhura');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into course values('c++',100,'Tushar');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into course values('Linux',60,'Dube');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from course;
++-------+----------+---------+
+| cname | duration | fname   |
++-------+----------+---------+
+| c++   |      100 | Tushar  |
+| java  |      120 | Madhura |
+| Linux |       60 | Dube    |
++-------+----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  12 | Atharva | 123456 |
+|  13 | Atharva | 123457 |
+|  14 | Rajan   |   NULL |
++-----+---------+--------+
+3 rows in set (0.01 sec)
+
+mysql> create table student_marks(
+    -> sid int,
+    -> cr_name varchar(30),
+    -> marks int,
+    -> primary key(sid,cname),
+    -> constraint fk_sid foreign key(sid) references student(sid)
+    -> on delete cascade
+    -> on update cascade,
+    -> constraint fk_cname foreign key(cr_name) references course(cname));
+ERROR 1072 (42000): Key column 'cname' doesn't exist in table
+mysql>
+mysql> create table student_marks(
+    -> sid int,
+    -> cr_name varchar(30),
+    -> marks int,
+    -> primary key(sid,cr_name),
+    -> constraint fk_sid foreign key(sid) references student(sid)
+    -> on delete cascade
+    -> on update cascade,
+    -> constraint fk_cname foreign key(cr_name) references course(cname));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql>
+mysql> insert into student_marks(12,'java',97);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '12,'java',97)' at line 1
+mysql> insert into student_marks values(12,'java',97);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(12,'.net',97);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`acts0923`.`student_marks`, CONSTRAINT `fk_cname` FOREIGN KEY (`cr_name`) REFERENCES `course` (`cname`))
+mysql> insert into student_marks values(12,'linux',97);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(13,'linux',88);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student_marks values(13,'c++',88);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student_marks;
++-----+---------+-------+
+| sid | cr_name | marks |
++-----+---------+-------+
+|  12 | java    |    97 |
+|  12 | linux   |    97 |
+|  13 | c++     |    88 |
+|  13 | linux   |    88 |
++-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> delete from student where sid=12;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  13 | Atharva | 123457 |
+|  14 | Rajan   |   NULL |
++-----+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student_marks;
++-----+---------+-------+
+| sid | cr_name | marks |
++-----+---------+-------+
+|  13 | c++     |    88 |
+|  13 | linux   |    88 |
++-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update student
+    -> set sid=16
+    -> where sid=13;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  14 | Rajan   |   NULL |
+|  16 | Atharva | 123457 |
++-----+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from student_marks;
++-----+---------+-------+
+| sid | cr_name | marks |
++-----+---------+-------+
+|  16 | c++     |    88 |
+|  16 | linux   |    88 |
++-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> delete from course where cname='c++';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`acts0923`.`student_marks`, CONSTRAINT `fk_cname` FOREIGN KEY (`cr_name`) REFERENCES `course` (`cname`))
+mysql> update course set cname='c++'
+    -> where cname='^C
+mysql> update course set cname='c++ 18'
+    -> where cname='c++';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`acts0923`.`student_marks`, CONSTRAINT `fk_cname` FOREIGN KEY (`cr_name`) REFERENCES `course` (`cname`))
+mysql> select * from course;
++-------+----------+---------+
+| cname | duration | fname   |
++-------+----------+---------+
+| c++   |      100 | Tushar  |
+| java  |      120 | Madhura |
+| Linux |       60 | Dube    |
++-------+----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> delete from course where cname='java';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> Create table member(
+    -> Mid int primary key,
+    -> Mname varchar(20) not null,
+    -> Adhar_num int  unique,
+    -> Fees_paid float(10,2) check(fees_paid>100),
+    -> Bk_issued int default 2
+    -> )
+    -> ;
+Query OK, 0 rows affected, 1 warning (0.08 sec)
+
+mysql> insert into member values(1,'rajas',12345,200,34);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into member values(2,'shekhar',23456,2,34);
+ERROR 3819 (HY000): Check constraint 'member_chk_1' is violated.
+mysql> insert into member values(2,'shekhar',23456,99,34);
+ERROR 3819 (HY000): Check constraint 'member_chk_1' is violated.
+mysql> insert into member values(2,'shekhar',23456,100,34);
+ERROR 3819 (HY000): Check constraint 'member_chk_1' is violated.
+mysql> insert into member values(2,'shekhar',23456,101,34);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into member values(3,'deven',44444,101,null);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from member;
++-----+---------+-----------+-----------+-----------+
+| Mid | Mname   | Adhar_num | Fees_paid | Bk_issued |
++-----+---------+-----------+-----------+-----------+
+|   1 | rajas   |     12345 |    200.00 |        34 |
+|   2 | shekhar |     23456 |    101.00 |        34 |
+|   3 | deven   |     44444 |    101.00 |      NULL |
++-----+---------+-----------+-----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into member(mid,mname,fees_paid) values(4,'rujuta',201);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from member;
++-----+---------+-----------+-----------+-----------+
+| Mid | Mname   | Adhar_num | Fees_paid | Bk_issued |
++-----+---------+-----------+-----------+-----------+
+|   1 | rajas   |     12345 |    200.00 |        34 |
+|   2 | shekhar |     23456 |    101.00 |        34 |
+|   3 | deven   |     44444 |    101.00 |      NULL |
+|   4 | rujuta  |      NULL |    201.00 |         2 |
++-----+---------+-----------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> Create table loan(
+    -> Loaned int primary key auto_increament,
+    -> Name varchar(30),
+    -> Loan_required double(9,2),
+    -> Loan_approved double(9,2),
+    -> Constraint l_chk check(loan_approved <=loan_required)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_increament,
+Name varchar(30),
+Loan_required double(9,2),
+Loan_approved doub' at line 2
+mysql> Create table loan(
+    -> Loanid int primary key auto_increment,
+    -> Name varchar(30),
+    -> Loan_required double(9,2),
+    -> Loan_approved double(9,2),
+    -> Constraint l_chk check(loan_approved <=loan_required)
+    -> );
+Query OK, 0 rows affected, 2 warnings (0.06 sec)
+
+mysql> insert into loan(default,'Rajat',50000,40000);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'default,'Rajat',50000,40000)' at line 1
+mysql> insert into loan values(default,'Rajat',50000,40000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into loan values(default,'Ashutosh',50000,60000);
+ERROR 3819 (HY000): Check constraint 'l_chk' is violated.
+mysql> insert into loan values(default,'Ashutosh',50000,50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from loan;
++--------+----------+---------------+---------------+
+| Loanid | Name     | Loan_required | Loan_approved |
++--------+----------+---------------+---------------+
+|      1 | Rajat    |      50000.00 |      40000.00 |
+|      2 | Ashutosh |      50000.00 |      50000.00 |
++--------+----------+---------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into loan values(10,'Archana',50000,50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from loan;
++--------+----------+---------------+---------------+
+| Loanid | Name     | Loan_required | Loan_approved |
++--------+----------+---------------+---------------+
+|      1 | Rajat    |      50000.00 |      40000.00 |
+|      2 | Ashutosh |      50000.00 |      50000.00 |
+|     10 | Archana  |      50000.00 |      50000.00 |
++--------+----------+---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into loan values(default,'Manisha',50000,50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from loan;
++--------+----------+---------------+---------------+
+| Loanid | Name     | Loan_required | Loan_approved |
++--------+----------+---------------+---------------+
+|      1 | Rajat    |      50000.00 |      40000.00 |
+|      2 | Ashutosh |      50000.00 |      50000.00 |
+|     10 | Archana  |      50000.00 |      50000.00 |
+|     11 | Manisha  |      50000.00 |      50000.00 |
++--------+----------+---------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into loan(name,loan_required,loan_approved) values('Swati',50000,50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from loan;
++--------+----------+---------------+---------------+
+| Loanid | Name     | Loan_required | Loan_approved |
++--------+----------+---------------+---------------+
+|      1 | Rajat    |      50000.00 |      40000.00 |
+|      2 | Ashutosh |      50000.00 |      50000.00 |
+|     10 | Archana  |      50000.00 |      50000.00 |
+|     11 | Manisha  |      50000.00 |      50000.00 |
+|     12 | Swati    |      50000.00 |      50000.00 |
++--------+----------+---------------+---------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table loan auto_increment=1001;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into loan(name,loan_required,loan_approved) values('Chitra',50000,50000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from loan;
++--------+----------+---------------+---------------+
+| Loanid | Name     | Loan_required | Loan_approved |
++--------+----------+---------------+---------------+
+|      1 | Rajat    |      50000.00 |      40000.00 |
+|      2 | Ashutosh |      50000.00 |      50000.00 |
+|     10 | Archana  |      50000.00 |      50000.00 |
+|     11 | Manisha  |      50000.00 |      50000.00 |
+|     12 | Swati    |      50000.00 |      50000.00 |
+|   1001 | Chitra   |      50000.00 |      50000.00 |
++--------+----------+---------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>

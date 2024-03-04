@@ -1,0 +1,69 @@
+$lt,$eq,$ne,$gt,$gte,$lte,$in, $nin,$size, $type,$elemMatch
+regular expression,$or,$and,$not,$exists,$mod
+
+-----to find all movies with rating=5, display names and rating
+db.movie.find({rating:5},{name:1,rating:1})
+-----to find all movies with price=200, display names and rating
+db.movie.find({price:200},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200, display names and rating
+db.movie.find({price:{$gt:200}},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200, display names and rating
+db.movie.find({price:{$gt:200}},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200,and rating >=3
+---- display names and rating
+price:{$gt:200}
+rating:{$gte:3}
+db.movie.find({price:{$gt:200},rating:{$gte:3}},{name:1,rating:1,price:1,_id:0})
+----display all movies with price = either 200 or 250 or 350
+db.movie.find({price:{$in:[250,200,350]}},{name:1,rating:1,price:1,_id:0})
+
+----display all movies with price not = either 200 or 250 or 350
+db.movie.find({price:{$nin:[250,200,350]}},{name:1,rating:1,price:1,_id:0})
+
+-----display all movies with ticket_no>200
+db.movie.find({ticket_no:{$gt:200}})
+
+----display all movies with rating >=3 and <7
+db.movie.find({rating:{$gte:3,$lt:7}},{name:1,rating:1,price:1,_id:0})
+
+----find all movies in which rating is null
+db.movie.find({rating:null})
+
+----find all movies in which rating exists and it is null
+ db.movie.find({rating:{$in:[null],$exists:true}})
+ 
+---display movie with rating>3 or price >200
+rating:{$gt:3}
+price:{$gt:200}
+$or:[{rating:{$gt:3}},{price:{$gt:200}}] 
+db.movie.find({$or:[{rating:{$gt:3}},{price:{$gt:200}}] })
+ 
+-----find all movies in which the size of actor array is 3
+db.movie.find({actor:{$size:3}}) 
+
+---find all movies in which Amitabh has acted
+db.movie.find({actor:/^[Aa]mitabh/im})
+db.movie.find({actor:{$regexp:/amitabh/i}})
+db.movie.find({actor:{$regexp:/amitabh/,$option:'im'}})
+
+----find all movies in which vidya balan is acted and her name 
+is at 1st index position
+db.movie.find({'actor.1':'vidya balan'})
+
+----find all movies with rating given in string
+db.movie.find({rating:{$type:'string'}})
+
+----find all movies with rating is not in string
+db.movie.find({rating:{$not:{$type:'string'}}})
+
+----find all movies with odd rating
+db.movie.find({rating:{$mod:[2,1]}})       rating%2==1
+
+----find all movies with rating divisible by 3
+db.movie.find({rating:{$mod:[3,0]}}) 
+
+---to delete the record
+----delete doesnot work on capped collection
+db.emp.deleteMany({})
+db.emp.deleteOne({})
+db.emp.remove({})

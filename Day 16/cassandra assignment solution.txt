@@ -1,0 +1,78 @@
+
+Example
+1. create customer type cno,cname,mobile
+
+create type customer(cno int,cname varchar,mobile text);
+
+1. create table account(acno int ,type varchar,balance double,cinfo customer,
+chequebknum list<int>)
+insert into account1(acno,type,balance,cinfo,chequebknum) values(111,'Current',2000.00,{num:503,name:'Albert',mobile:'8452584242'},[3000,3001,3002]);
+cqlsh:hr> insert into account1(acno,type,balance,cinfo,chequebknum) values(333,'Recurring',4000.00,{num:504,name:'Joe',mobile:'8758584242'},[4000,4001,4002]);
+cqlsh:hr> insert into account1(acno,type,balance,cinfo,chequebknum) values(444,'Saving',7000.00,{num:505,name:'Jilly',mobile:'8754584242'},[5000,5001,5002]);
+
+#since we want to update balance column in account table so column should be of counter type and 
+#all other columns should be in primary key. otherwise it gives error that counter and non counter 
+#cannot be together for user defined type and collections to add in primary ke need to use frozen
+
+create table account1(accno int,acc_type varchar,balance counter,cinfo frozen<customer>,
+checkbkno frozen<list<int>>,PRIMARY KEY (accno,acc_type,cinfo,checkbkno));
+
+#you cannot insert records in table with counter column hence you need to use 
+#update to add data
+
+cqlsh:hr> update account1
+      ... set balance=balance+10000
+      ... where accno=11 and acc_type='s' and 
+cinfo={cno:1,cname:'xxx',mobile:'3333'} 
+  and checkbkno=[111,222];
+
+cqlsh:hr> select * from account1;
+
+ accno | acc_type | cinfo                                  | checkbkno  | balance
+-------+----------+----------------------------------------+------------+---------
+    11 |        s | {cno: 1, cname: 'xxx', mobile: '3333'} | [111, 222] |   10000
+
+update account1
+set balance=balance+70000
+ where accno=12 and acc_type='s' and 
+  cinfo={cno:1,cname:'xxx',mobile:'3333'} and checkbkno=[111,222];
+
+
+3. Transfer funds 50000 from ac/no 111 to a/c no 333 and a then transfer 10000 Rs amt from 333 to 4444
+ update account1
+      ... set balance=balance-10000
+      ... where accno=11 and acc_type='s' and cinfo={cno:1,cname:'xxx',mobile:'3333'} and checkbkno=[111,222];
+
+update account1
+      ... set balance=balance+10000
+      ... where accno=12 and acc_type='s' and cinfo={cno:1,cname:'xxx',mobile:'3333'} and checkbkno=[111,222];
+
+
+4. add new column in account table interest
+ alter table account1 add interest counter
+
+5. update all the values of interest by value to 4
+             update account1
+            ... set interest=interest+4
+            ... where accno=11 and acc_type='s' and cinfo={cno:1,cname:'xxx',mobile:'3333'} and checkbkno=[111,222];
+
+6. display all the data on the screeen
+    select * from account1;
+
+7. add new cheque book number in the list of acno 111
+#this query will work only if it is not counter table
+    update account1
+    set checkbkno=['111','123','2345']
+    where accno=11 and acc_type='s' and cinfo={cno:1,cname:'xxx',mobile:'3333'} and checkbkno=[111,222];
+
+8. create index on name
+#this query will work only if it is not counter table
+    create index idxname on acc_type
+
+     
+
+9. add new column rm_manager varchar in the table.
+#this query will work only if it is not counter table
+alter table account1 add rm_manager varchar;
+
+

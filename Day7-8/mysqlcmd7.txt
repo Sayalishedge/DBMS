@@ -1,0 +1,961 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use acts0923
+Database changed
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+14 rows in set (0.02 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from emp e,dept d
+    -> where e.deptno=d.deptno;
++-------+--------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO | DEPTNO | DNAME      | LOC      |
++-------+--------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |     20 | RESEARCH   | DALLAS   |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |     30 | SALES      | CHICAGO  |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |     30 | SALES      | CHICAGO  |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |     20 | RESEARCH   | DALLAS   |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |     30 | SALES      | CHICAGO  |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |     30 | SALES      | CHICAGO  |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |     20 | RESEARCH   | DALLAS   |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |     30 | SALES      | CHICAGO  |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |     20 | RESEARCH   | DALLAS   |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |     30 | SALES      | CHICAGO  |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |     20 | RESEARCH   | DALLAS   |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |     10 | ACCOUNTING | NEW YORK |
++-------+--------+-----------+------+------------+---------+---------+--------+--------+------------+----------+
+14 rows in set (0.01 sec)
+
+mysql> desc emp;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPNO    | int          | NO   | PRI | NULL    |       |
+| ENAME    | varchar(10)  | YES  |     | NULL    |       |
+| JOB      | varchar(9)   | YES  |     | NULL    |       |
+| MGR      | int          | YES  |     | NULL    |       |
+| HIREDATE | date         | YES  |     | NULL    |       |
+| SAL      | decimal(7,2) | YES  |     | NULL    |       |
+| COMM     | decimal(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int          | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.01 sec)
+
+mysql> insert into emp values(1234,'xxx','clerk',7902,'2000-10-11',4567,456,null);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  1234 | xxx    | clerk     | 7902 | 2000-10-11 | 4567.00 |  456.00 |   NULL |
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1982-12-09 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1983-01-12 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+15 rows in set (0.00 sec)
+
+mysql> select *
+    -> from dept
+    -> where not exists(select * from emp e where e.deptno=dept.deptno);
++--------+------------+--------+
+| DEPTNO | DNAME      | LOC    |
++--------+------------+--------+
+|     40 | OPERATIONS | BOSTON |
++--------+------------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from emp
+    -> where deptno is null;
++-------+-------+-------+------+------------+---------+--------+--------+
+| EMPNO | ENAME | JOB   | MGR  | HIREDATE   | SAL     | COMM   | DEPTNO |
++-------+-------+-------+------+------------+---------+--------+--------+
+|  1234 | xxx   | clerk | 7902 | 2000-10-11 | 4567.00 | 456.00 |   NULL |
++-------+-------+-------+------+------------+---------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno.d.deptno,d.dname from emp e inner join dept d on e.deptno=d.deptno
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.deptno,d.dname from emp e inner join dept d on e.deptno=d.deptno' at line 1
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from emp e,dept d;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  1234 | xxx    |   NULL |     10 | ACCOUNTING |
+|  1234 | xxx    |   NULL |     20 | RESEARCH   |
+|  1234 | xxx    |   NULL |     30 | SALES      |
+|  1234 | xxx    |   NULL |     40 | OPERATIONS |
+|  7369 | SMITH  |     20 |     10 | ACCOUNTING |
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7369 | SMITH  |     20 |     30 | SALES      |
+|  7369 | SMITH  |     20 |     40 | OPERATIONS |
+|  7499 | ALLEN  |     30 |     10 | ACCOUNTING |
+|  7499 | ALLEN  |     30 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7499 | ALLEN  |     30 |     40 | OPERATIONS |
+|  7521 | WARD   |     30 |     10 | ACCOUNTING |
+|  7521 | WARD   |     30 |     20 | RESEARCH   |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     40 | OPERATIONS |
+|  7566 | JONES  |     20 |     10 | ACCOUNTING |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7566 | JONES  |     20 |     30 | SALES      |
+|  7566 | JONES  |     20 |     40 | OPERATIONS |
+|  7654 | MARTIN |     30 |     10 | ACCOUNTING |
+|  7654 | MARTIN |     30 |     20 | RESEARCH   |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7654 | MARTIN |     30 |     40 | OPERATIONS |
+|  7698 | BLAKE  |     30 |     10 | ACCOUNTING |
+|  7698 | BLAKE  |     30 |     20 | RESEARCH   |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     40 | OPERATIONS |
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7782 | CLARK  |     10 |     20 | RESEARCH   |
+|  7782 | CLARK  |     10 |     30 | SALES      |
+|  7782 | CLARK  |     10 |     40 | OPERATIONS |
+|  7788 | SCOTT  |     20 |     10 | ACCOUNTING |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT  |     20 |     30 | SALES      |
+|  7788 | SCOTT  |     20 |     40 | OPERATIONS |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7839 | KING   |     10 |     20 | RESEARCH   |
+|  7839 | KING   |     10 |     30 | SALES      |
+|  7839 | KING   |     10 |     40 | OPERATIONS |
+|  7844 | TURNER |     30 |     10 | ACCOUNTING |
+|  7844 | TURNER |     30 |     20 | RESEARCH   |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7844 | TURNER |     30 |     40 | OPERATIONS |
+|  7876 | ADAMS  |     20 |     10 | ACCOUNTING |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS  |     20 |     30 | SALES      |
+|  7876 | ADAMS  |     20 |     40 | OPERATIONS |
+|  7900 | JAMES  |     30 |     10 | ACCOUNTING |
+|  7900 | JAMES  |     30 |     20 | RESEARCH   |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  7900 | JAMES  |     30 |     40 | OPERATIONS |
+|  7902 | FORD   |     20 |     10 | ACCOUNTING |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7902 | FORD   |     20 |     30 | SALES      |
+|  7902 | FORD   |     20 |     40 | OPERATIONS |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER |     10 |     20 | RESEARCH   |
+|  7934 | MILLER |     10 |     30 | SALES      |
+|  7934 | MILLER |     10 |     40 | OPERATIONS |
++-------+--------+--------+--------+------------+
+60 rows in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from emp e inner join dept d on e.deptno=d.deptno;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
++-------+--------+--------+--------+------------+
+14 rows in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from dept d inner join emp e on e.deptno=d.deptno;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
++-------+--------+--------+--------+------------+
+14 rows in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno.d.deptno,d.dname from emp e right join dept d on e.deptno=d.deptno
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.deptno,d.dname from emp e right join dept d on e.deptno=d.deptno' at line 1
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from emp e right join dept d on e.deptno=d.deptno;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  NULL | NULL   |   NULL |     40 | OPERATIONS |
++-------+--------+--------+--------+------------+
+15 rows in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno,d.deptno.d.dname from dept d left join emp e on e.deptno=d.deptno
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.dname from dept d left join emp e on e.deptno=d.deptno' at line 1
+mysql> Select e.empno,e.ename,e.deptno,d.deptno.d.dname
+    -> from dept d left join emp e on e.deptno=d.deptno;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.dname
+from dept d left join emp e on e.deptno=d.deptno' at line 1
+mysql> Select e.empno,e.ename,e.deptno,d.deptno.d.dname
+    -> ^C
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from dept d left join emp e on e.deptno=d.deptno
+    -> ;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  NULL | NULL   |   NULL |     40 | OPERATIONS |
++-------+--------+--------+--------+------------+
+15 rows in set (0.00 sec)
+
+mysql> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from dept d left join emp e on e.deptno=d.deptno
+    -> union
+    -> Select e.empno,e.ename,e.deptno,d.deptno,d.dname
+    -> from dept d right join emp e on e.deptno=d.deptno;
++-------+--------+--------+--------+------------+
+| empno | ename  | deptno | deptno | dname      |
++-------+--------+--------+--------+------------+
+|  7782 | CLARK  |     10 |     10 | ACCOUNTING |
+|  7839 | KING   |     10 |     10 | ACCOUNTING |
+|  7934 | MILLER |     10 |     10 | ACCOUNTING |
+|  7369 | SMITH  |     20 |     20 | RESEARCH   |
+|  7566 | JONES  |     20 |     20 | RESEARCH   |
+|  7788 | SCOTT  |     20 |     20 | RESEARCH   |
+|  7876 | ADAMS  |     20 |     20 | RESEARCH   |
+|  7902 | FORD   |     20 |     20 | RESEARCH   |
+|  7499 | ALLEN  |     30 |     30 | SALES      |
+|  7521 | WARD   |     30 |     30 | SALES      |
+|  7654 | MARTIN |     30 |     30 | SALES      |
+|  7698 | BLAKE  |     30 |     30 | SALES      |
+|  7844 | TURNER |     30 |     30 | SALES      |
+|  7900 | JAMES  |     30 |     30 | SALES      |
+|  NULL | NULL   |   NULL |     40 | OPERATIONS |
+|  1234 | xxx    |   NULL |   NULL | NULL       |
++-------+--------+--------+--------+------------+
+16 rows in set (0.00 sec)
+
+mysql> select * from student;
++-----+---------+--------+
+| sid | sname   | mobile |
++-----+---------+--------+
+|  14 | Rajan   |   NULL |
+|  16 | Atharva | 123457 |
++-----+---------+--------+
+2 rows in set (0.01 sec)
+
+mysql> select * from student_marks;
++-----+---------+-------+
+| sid | cr_name | marks |
++-----+---------+-------+
+|  16 | c++     |    88 |
+|  16 | linux   |    88 |
++-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s,student_marks
+    -> where s.sid=studedent_marks.sid;
+ERROR 1054 (42S22): Unknown column 'studedent_marks.sid' in 'where clause'
+mysql> from student s,student_marks
+    -> where s.sid=student_marks.sid;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from student s,student_marks
+where s.sid=student_marks.sid' at line 1
+mysql> select *
+    -> from student s,student_marks sm
+    -> where s.sid=sm.sid;
++-----+---------+--------+-----+---------+-------+
+| sid | sname   | mobile | sid | cr_name | marks |
++-----+---------+--------+-----+---------+-------+
+|  16 | Atharva | 123457 |  16 | c++     |    88 |
+|  16 | Atharva | 123457 |  16 | linux   |    88 |
++-----+---------+--------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select *
+    -> from student s left join student_marks sm
+    -> on s.sid=sm.sid;
++-----+---------+--------+------+---------+-------+
+| sid | sname   | mobile | sid  | cr_name | marks |
++-----+---------+--------+------+---------+-------+
+|  14 | Rajan   |   NULL | NULL | NULL    |  NULL |
+|  16 | Atharva | 123457 |   16 | c++     |    88 |
+|  16 | Atharva | 123457 |   16 | linux   |    88 |
++-----+---------+--------+------+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> use test
+Database changed
+mysql> select * from room;
+ERROR 1146 (42S02): Table 'test.room' doesn't exist
+mysql> sho tables
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sho tables' at line 1
+mysql> show tables
+    -> ;
++----------------------+
+| Tables_in_test       |
++----------------------+
+| account_2            |
+| addr22               |
+| addr44               |
+| addr55               |
+| addr66               |
+| address              |
+| address77            |
+| addressmany          |
+| addressmany1         |
+| addresstab1          |
+| addresstab1_usertab1 |
+| all_emp              |
+| allemp               |
+| bonus                |
+| booking              |
+| category             |
+| category1            |
+| contable             |
+| conttab22            |
+| course               |
+| course_back          |
+| course_backup        |
+| course_faculty       |
+| customer             |
+| customer_2           |
+| custtab1             |
+| custtab11            |
+| department           |
+| dept                 |
+| dept_info            |
+| dummy                |
+| emp                  |
+| emp11                |
+| emp12                |
+| emp_india            |
+| emp_japan            |
+| emp_proj11           |
+| emp_us               |
+| empheirarchy22       |
+| emphirarchy11        |
+| employee             |
+| employee_history     |
+| emptab1              |
+| emptab11             |
+| event                |
+| faculty              |
+| hibernate_sequence   |
+| image_data           |
+| mgr10                |
+| mychild_3            |
+| myemployee           |
+| mypro22              |
+| myprod11             |
+| myprodtab            |
+| myprodtab22          |
+| myprodtab33          |
+| myprodtab44          |
+| myproduct            |
+| myproduct_table      |
+| myproducttable       |
+| mystud               |
+| mytab_3              |
+| mytab_51             |
+| mytext               |
+| myuser               |
+| myuser1              |
+| myuser12             |
+| myuser22             |
+| nonperishableprod    |
+| orderitem            |
+| perishableprod       |
+| person11             |
+| persontab            |
+| pertab11             |
+| prod11               |
+| prod12               |
+| prod22               |
+| produ_cat            |
+| product              |
+| product77            |
+| product_2            |
+| product_analysis     |
+| product_data         |
+| project11            |
+| quetions             |
+| registeruser         |
+| role                 |
+| salariedemployee     |
+| salgrade             |
+| saltab22             |
+| saltable             |
+| stud12               |
+| stud22               |
+| student              |
+| student_2            |
+| student_3            |
+| studentiacsd         |
+| testdata             |
+| testmytab            |
+| user                 |
+| user11               |
+| user1234s            |
+| user123s             |
+| user22               |
+| user33               |
+| user44               |
+| user55               |
+| user66               |
+| user77               |
+| user_role            |
+| useraddr77           |
+| useraddress          |
+| userentity           |
+| usermany             |
+| usermany1            |
+| usertab              |
+| usertab1             |
+| worker               |
++----------------------+
+118 rows in set (0.01 sec)
+
+mysql> sho databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sho databses' at line 1
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| acts0923           |
+| auth               |
+| auth1              |
+| dacmarch23         |
+| fileuploader       |
+| hibernate          |
+| hospital           |
+| hsbcdb             |
+| iacsd0923          |
+| iacsd2111          |
+| iacsdedacmay21     |
+| iacsdmar22         |
+| iacsdsep22         |
+| information_schema |
+| knowit2111         |
+| mydb0923           |
+| mysql              |
+| performance_schema |
+| sakila             |
+| spring             |
+| sys                |
+| test               |
+| world              |
++--------------------+
+23 rows in set (0.00 sec)
+
+mysql> use iacsdsep22
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_iacsdsep22 |
++----------------------+
+| child_mytable        |
+| course               |
+| course_room          |
+| customer             |
+| mytable              |
+| room                 |
+| testtable            |
+| vehicle              |
++----------------------+
+8 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| acts0923           |
+| auth               |
+| auth1              |
+| dacmarch23         |
+| fileuploader       |
+| hibernate          |
+| hospital           |
+| hsbcdb             |
+| iacsd0923          |
+| iacsd2111          |
+| iacsdedacmay21     |
+| iacsdmar22         |
+| iacsdsep22         |
+| information_schema |
+| knowit2111         |
+| mydb0923           |
+| mysql              |
+| performance_schema |
+| sakila             |
+| spring             |
+| sys                |
+| test               |
+| world              |
++--------------------+
+23 rows in set (0.00 sec)
+
+mysql> use iacsd2111;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_iacsd2111 |
++---------------------+
+| allemp              |
+| author              |
+| bonus               |
+| book                |
+| book_has_author     |
+| course              |
+| course_audit        |
+| customer            |
+| dept                |
+| dummy               |
+| emp                 |
+| emp_dept            |
+| emp_history         |
+| emp_history1        |
+| emp_history2        |
+| empdata             |
+| employeeindia       |
+| employeejapan       |
+| employeeusa         |
+| faculty             |
+| funfare             |
+| mgr10               |
+| myproduct           |
+| mytab               |
+| mytab1              |
+| mytab11             |
+| mytab12             |
+| mytab1_has_mytab2   |
+| mytab2              |
+| mytable11           |
+| product             |
+| salgrade            |
+| student             |
+| student1            |
+| student_course      |
+| test                |
+| test111             |
+| vehicle             |
++---------------------+
+38 rows in set (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| acts0923           |
+| auth               |
+| auth1              |
+| dacmarch23         |
+| fileuploader       |
+| hibernate          |
+| hospital           |
+| hsbcdb             |
+| iacsd0923          |
+| iacsd2111          |
+| iacsdedacmay21     |
+| iacsdmar22         |
+| iacsdsep22         |
+| information_schema |
+| knowit2111         |
+| mydb0923           |
+| mysql              |
+| performance_schema |
+| sakila             |
+| spring             |
+| sys                |
+| test               |
+| world              |
++--------------------+
+23 rows in set (0.00 sec)
+
+mysql> use iacsdedacmay21;
+Database changed
+mysql> show tables;
++--------------------------+
+| Tables_in_iacsdedacmay21 |
++--------------------------+
+| bonus                    |
+| category                 |
+| customer                 |
+| customer1                |
+| dept                     |
+| dept_audit               |
+| depthistory              |
+| dummy                    |
+| mydept                   |
+| myemp                    |
+| myempdept                |
+| myemployee               |
+| myorder                  |
+| mytable1                 |
+| newmytab                 |
+| product                  |
+| salgrade                 |
+| vehicle                  |
+| vehicle_cust             |
++--------------------------+
+19 rows in set (0.00 sec)
+
+mysql> select * from vehicle;
++-----+---------+-----------+
+| vid | vname   | price     |
++-----+---------+-----------+
+| 100 | Activa  |  80000.00 |
+| 200 | Santro  | 700000.00 |
+| 300 | jupiter |  75000.00 |
++-----+---------+-----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from  vehicle_cust;
++-----+--------+------------+-----------+
+| vid | custid | p_date     | dis_price |
++-----+--------+------------+-----------+
+| 100 |     10 | 2010-02-05 |     75000 |
+| 100 |     20 | 2010-02-05 |     75000 |
+| 200 |     10 | 2010-03-05 |    650000 |
+| 300 |     20 | 2020-02-05 |     73000 |
++-----+--------+------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-----+--------+---------+
+| cid | cname  | address |
++-----+--------+---------+
+|  10 | Revati | Aundh   |
+|  20 | Rajan  | Aundh   |
++-----+--------+---------+
+2 rows in set (0.00 sec)
+
+mysql> Select cid,cname,vid,vname
+    -> From customer c,vehicle_cus vc,vehicle v
+    -> Where c.cid=vc.cust_id and vc.vid=v.vid;
+ERROR 1146 (42S02): Table 'iacsdedacmay21.vehicle_cus' doesn't exist
+mysql> Select cid,cname,vid,vname
+    -> From customer c,vehicle_cust vc,vehicle v
+    -> Where c.cid=vc.cust_id and vc.vid=v.vid;
+ERROR 1052 (23000): Column 'vid' in field list is ambiguous
+mysql> Select cid,cname,v.vid,vname
+    -> From customer c,vehicle_cust vc,vehicle v
+    -> Where c.cid=vc.cust_id and vc.vid=v.vid;
+ERROR 1054 (42S22): Unknown column 'vc.cust_id' in 'where clause'
+mysql> Select cid,cname,v.vid,vname
+    -> From customer c,vehicle_cust vc,vehicle v
+    -> Where c.cid=vc.custid and vc.vid=v.vid;
++-----+--------+-----+---------+
+| cid | cname  | vid | vname   |
++-----+--------+-----+---------+
+|  10 | Revati | 100 | Activa  |
+|  10 | Revati | 200 | Santro  |
+|  20 | Rajan  | 100 | Activa  |
+|  20 | Rajan  | 300 | jupiter |
++-----+--------+-----+---------+
+4 rows in set (0.00 sec)
+
+mysql> Select cid,cname,v.vid,vname
+    -> From customer c,vehicle_cust vc,vehicle v
+    -> Where c.cid=vc.custid and vc.vid=v.vid and v.price>vc.dis_price;
++-----+--------+-----+---------+
+| cid | cname  | vid | vname   |
++-----+--------+-----+---------+
+|  10 | Revati | 100 | Activa  |
+|  20 | Rajan  | 100 | Activa  |
+|  10 | Revati | 200 | Santro  |
+|  20 | Rajan  | 300 | jupiter |
++-----+--------+-----+---------+
+4 rows in set (0.00 sec)
+
+mysql> Select cid,cname,v.vid,vname,v.price,vc.dis_price
+    -> From customer c,vehicle_cust vc,vehicle v
+    -> Where c.cid=vc.custid and vc.vid=v.vid and v.price>vc.dis_price;
++-----+--------+-----+---------+-----------+-----------+
+| cid | cname  | vid | vname   | price     | dis_price |
++-----+--------+-----+---------+-----------+-----------+
+|  10 | Revati | 100 | Activa  |  80000.00 |     75000 |
+|  20 | Rajan  | 100 | Activa  |  80000.00 |     75000 |
+|  10 | Revati | 200 | Santro  | 700000.00 |    650000 |
+|  20 | Rajan  | 300 | jupiter |  75000.00 |     73000 |
++-----+--------+-----+---------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> desc customer;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cid     | int         | NO   | PRI | NULL    |       |
+| cname   | varchar(20) | NO   |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into customer values(40,'Rajesh','Mumbai');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from  customer;
++-----+--------+---------+
+| cid | cname  | address |
++-----+--------+---------+
+|  10 | Revati | Aundh   |
+|  20 | Rajan  | Aundh   |
+|  40 | Rajesh | Mumbai  |
++-----+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> desc vehicle;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| vid   | int          | NO   | PRI | NULL    |       |
+| vname | varchar(20)  | YES  |     | NULL    |       |
+| price | decimal(9,2) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into vehicle values(400,'vespa',100000);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Select vid,vname
+    -> From vehicle_cust vc left join vehicle v on v.vid=vc.vid
+    -> ;
+ERROR 1052 (23000): Column 'vid' in field list is ambiguous
+mysql> Select vc.vid,vname
+    -> From vehicle_cust vc left join vehicle v on v.vid=vc.vid;
++-----+---------+
+| vid | vname   |
++-----+---------+
+| 100 | Activa  |
+| 200 | Santro  |
+| 100 | Activa  |
+| 300 | jupiter |
++-----+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from vehicle
+    -> ;
++-----+---------+-----------+
+| vid | vname   | price     |
++-----+---------+-----------+
+| 100 | Activa  |  80000.00 |
+| 200 | Santro  | 700000.00 |
+| 300 | jupiter |  75000.00 |
+| 400 | vespa   | 100000.00 |
++-----+---------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> selct * from vehicle_cust;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct * from vehicle_cust' at line 1
+mysql> select * from vehicle_cust;
++-----+--------+------------+-----------+
+| vid | custid | p_date     | dis_price |
++-----+--------+------------+-----------+
+| 100 |     10 | 2010-02-05 |     75000 |
+| 100 |     20 | 2010-02-05 |     75000 |
+| 200 |     10 | 2010-03-05 |    650000 |
+| 300 |     20 | 2020-02-05 |     73000 |
++-----+--------+------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from customer;
++-----+--------+---------+
+| cid | cname  | address |
++-----+--------+---------+
+|  10 | Revati | Aundh   |
+|  20 | Rajan  | Aundh   |
+|  40 | Rajesh | Mumbai  |
++-----+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> Select cid,cname
+    -> From customer c
+    -> Where not exists (select * from vehicle_cust vc where vc.custid=c.cid)
+    -> ;
++-----+--------+
+| cid | cname  |
++-----+--------+
+|  40 | Rajesh |
++-----+--------+
+1 row in set (0.00 sec)
+
+mysql> Select cid,cname
+    -> From customer c
+    -> Where not exists (select * from vehicle_cust vc where vc.custid=c.cid)
+    -> union
+    -> Select vid,vname
+    -> From vehicle v
+    -> Where not exists( select * from vehicle_cust vc where vc.vid=v.vid);
++-----+--------+
+| cid | cname  |
++-----+--------+
+|  40 | Rajesh |
+| 400 | vespa  |
++-----+--------+
+2 rows in set (0.00 sec)
+
+mysql> Select cid,cname,null vid,null vname
+    -> From customer c
+    -> Where not exists (select * from vehicle_cust vc where vc.custid=c.cid)
+    -> union
+    -> Select null,null,vid,vname
+    -> From vehicle v
+    -> Where not exists( select * from vehicle_cust vc where vc.vid=v.vid);
++------+--------+------+-------+
+| cid  | cname  | vid  | vname |
++------+--------+------+-------+
+|   40 | Rajesh | NULL | NULL  |
+| NULL | NULL   |  400 | vespa |
++------+--------+------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update customer
+    -> set address='Baner'
+    -> where cname='Rajan';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from customer;
++-----+--------+---------+
+| cid | cname  | address |
++-----+--------+---------+
+|  10 | Revati | Aundh   |
+|  20 | Rajan  | Baner   |
+|  40 | Rajesh | Mumbai  |
++-----+--------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from vehicle_cust;
++-----+--------+------------+-----------+
+| vid | custid | p_date     | dis_price |
++-----+--------+------------+-----------+
+| 100 |     10 | 2010-02-05 |     75000 |
+| 100 |     20 | 2010-02-05 |     75000 |
+| 200 |     10 | 2010-03-05 |    650000 |
+| 300 |     20 | 2020-02-05 |     73000 |
++-----+--------+------------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> Select vid,vname,
+    -> From vehicle v
+    -> Where vid in(select vc.vid from vehicle_cust vc
+    -> where vc.custid in (
+    -> select cid
+    ->   from customer
+    -> where address='aundh'
+    -> ));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'From vehicle v
+Where vid in(select vc.vid from vehicle_cust vc
+where vc.custid ' at line 2
+mysql> Select vid,vname
+    -> From vehicle v
+    -> Where vid in(select vc.vid from vehicle_cust vc
+    -> where vc.custid in (
+    -> select cid
+    ->   from customer
+    -> where address='aundh'
+    -> ));
++-----+--------+
+| vid | vname  |
++-----+--------+
+| 100 | Activa |
+| 200 | Santro |
++-----+--------+
+2 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,1746 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use acts0923
+Database changed
+mysql> drop procedure updatesal;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure updatesal(in eno int,out nsal double(10,2),out status varchar(20))
+    -> begin
+    -> declare vsal double(20,2);
+    -> select sal into vsal
+    -> from emp
+    -> where empno=eno;
+    -> if vsal<1500 then
+    ->    set nsal=vsal*1.20;
+    ->    set status='updated by 20%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> elseif vasal<2500 then
+    ->    set nsal=vsal*1.15;
+    ->    set status='updated by 15%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> else
+    ->    set status='updated by 10%';
+    ->     set nsal=vsal*1.10;
+    -> update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> end if;
+    -> select nsal,status;
+    -> end//
+Query OK, 0 rows affected, 2 warnings (0.01 sec)
+
+mysql> call delimiter //
+ERROR 1305 (42000): PROCEDURE acts0923.delimiter does not exist
+mysql> create procedure updatesal(in eno int,out nsal double(10,2),out status varchar(20))
+    -> begin
+    -> declare vsal double(20,2);
+    -> select sal into vsal
+    -> from emp
+    -> where empno=eno;
+    -> if vsal<1500 then
+    ->    set nsal=vsal*1.20;
+    ->    set status='updated by 20%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> elseif vasal<2500 then
+    ->    set nsal=vsal*1.15;
+    ->    set status='updated by 15%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> else
+    ->    set status='updated by 10%';
+    ->     set nsal=vsal*1.10;
+    -> update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> end if;
+    -> select nsal,status;
+    ->
+    -> ^C
+mysql> call updatesal(7902,@ns,@state);
+    -> //
+ERROR 1054 (42S22): Unknown column 'vasal' in 'field list'
+mysql> drop procedure updatesal;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure updatesal(in eno int,out nsal double(10,2),out status varchar(20))
+    -> begin
+    -> declare vsal double(20,2);
+    -> select sal into vsal
+    -> from emp
+    -> where empno=eno;
+    -> if vsal<1500 then
+    ->    set nsal=vsal*1.20;
+    ->    set status='updated by 20%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> elseif vsal<2500 then
+    ->    set nsal=vsal*1.15;
+    ->    set status='updated by 15%';
+    ->    update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> else
+    ->    set status='updated by 10%';
+    ->     set nsal=vsal*1.10;
+    -> update emp
+    ->    set sal=nsal
+    ->    where empno=eno;
+    -> end if;
+    -> select nsal,status;
+    -> end//
+Query OK, 0 rows affected, 2 warnings (0.00 sec)
+
+mysql> call updatesal(7902,@ns,@state);
+    -> //
++---------+----------------+
+| nsal    | status         |
++---------+----------------+
+| 3300.00 | updated by 10% |
++---------+----------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @ns,@state;
+    -> //
++------+----------------+
+| @ns  | @state         |
++------+----------------+
+| 3300 | updated by 10% |
++------+----------------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(2);
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=concat(str,',',n);
+  set n=n+1;
+end while;
+set str=substr(2);
+end' at line 6
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(2);
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ');
+end' at line 9
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(2,leng(str));
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> drop procedure whiledemo;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(2,length(str));
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call whiledemo(10);
+ERROR 1406 (22001): Data too long for column 'str' at row 1
+mysql> call whiledemo(5);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure whiledemo;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(2,length(str));
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call whiledemo(5);
++------+
+| str  |
++------+
+|      |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure whiledemo;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call whiledemo(5)
+    -> ;
++------------+
+| str        |
++------------+
+| ,1,2,3,4,5 |
++------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop whiledemo
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'whiledemo' at line 1
+mysql> drop procedure whiledemo;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(str,2)
+    -> select str;
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select str;
+end' at line 10
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure whiledemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> while n<=num do
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    -> end while;
+    -> set str=substr(str,2);
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call whiledemo(5);
++-----------+
+| str       |
++-----------+
+| 1,2,3,4,5 |
++-----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure repeatdemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(20) default '';
+    -> repeat
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    ->   until n>num;
+    -> end repeat;
+    -> set str=substr(str,2);
+    -> select str;
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ';
+end repeat;
+set str=substr(str,2);
+select str;
+end' at line 8
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure repeatdemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(50) default '';
+    -> repeat
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    ->   until n>num
+    -> end repeat;
+    -> set str=substr(str,2);
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call repeatdemo(10);
++----------------------+
+| str                  |
++----------------------+
+| 1,2,3,4,5,6,7,8,9,10 |
++----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure loopdemo(num int)
+    -> begin
+    -> declare n int default 1;
+    -> declare str varchar(50) default '';
+    -> label1:loop
+    ->   set str=concat(str,',',n);
+    ->   set n=n+1;
+    ->   if n>num then
+    ->     leave label1;
+    ->   else
+    ->     iterate label1;
+    ->   end if;
+    -> end loop;
+    -> set str=substr(str,2);
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call loopdemo(10);
++----------------------+
+| str                  |
++----------------------+
+| 1,2,3,4,5,6,7,8,9,10 |
++----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> str=concat(lpad('','*',num),'\n');
+    -> str=concat(str,lpad('','*',num),'\n');
+    -> select str
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=concat(lpad('','*',num),'\n');
+str=concat(str,lpad('','*',num),'\n');
+select st' at line 4
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> str=concat(lpad(' ','*',num),'\n');
+    -> str=concat(str,lpad(' ','*',num),'\n');
+    -> select str
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=concat(lpad(' ','*',num),'\n');
+str=concat(str,lpad(' ','*',num),'\n');
+select ' at line 4
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> set str=concat(lpad(' ','*',num),'\n');
+    -> set str=concat(str,lpad(' ','*',num),'\n');
+    -> select str
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 7
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> set str=concat(lpad(' ','*',num),'\n');
+    -> set str=concat(str,lpad(' ','*',num),'\n');
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(2);
+ERROR 1292 (22007): Truncated incorrect INTEGER value: '*'
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> set str=concat(lpad(' ',num,'*'),'\n');
+    -> set str=concat(str,lpad(' ',num,'*'),'\n');
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call trianglepattern(2);
+    -> //
++--------+
+| str    |
++--------+
+| *
+*
+ |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure trianglepatteren;
+    -> //
+ERROR 1305 (42000): PROCEDURE acts0923.trianglepatteren does not exist
+mysql> drop procedure trianglepattern;
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> set str=concat(lpad('',num,'*'),'\n');
+    -> set str=concat(str,lpad('',num,'*'),'\n');
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++--------------+
+| str          |
++--------------+
+| *****
+*****
+ |
++--------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(lpad('',n,'*'),'\n');
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++--------+
+| str    |
++--------+
+| *****
+ |
++--------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(str,lpad('',n,'*'),'\n');
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++----------------------+
+| str                  |
++----------------------+
+| *
+**
+***
+****
+*****
+ |
++----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(str,lpad(' ',n+1,'*'),'\n');
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++---------------------------+
+| str                       |
++---------------------------+
+| *
+**
+***
+****
+*****
+ |
++---------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(str,rpad(' ',n+1,'*'),'\n');
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++---------------------------+
+| str                       |
++---------------------------+
+|  *
+ **
+ ***
+ ****
+ *****
+ |
++---------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',n+1,'*'));
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++---------------------------+
+| str                       |
++---------------------------+
+|
+**
+***
+****
+*****
+****** |
++---------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop procedure trianglepattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure trianglepattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',n,'*'));
+    ->    set n=n+1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call trianglepattern(5);
++----------------------+
+| str                  |
++----------------------+
+|
+*
+**
+***
+****
+***** |
++----------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2)
+    -> while n<=num do
+    ->    set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    -> end while;
+    -> select str;
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'while n<=num do
+   set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+  ' at line 7
+mysql> delimiter ;
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call diamondpattern(7);
++----------------------------+
+| str                        |
++----------------------------+
+|
+
+
+
+   **************** |
++----------------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select str;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call diamondpattern(7);
++-------+
+| str   |
++-------+
+|
+   * |
++-------+
+1 row in set (0.00 sec)
+
++-------------+
+| str         |
++-------------+
+|
+
+   **** |
++-------------+
+1 row in set (0.00 sec)
+
++--------------------+
+| str                |
++--------------------+
+|
+
+
+   ********* |
++--------------------+
+1 row in set (0.01 sec)
+
++----------------------------+
+| str                        |
++----------------------------+
+|
+
+
+
+   **************** |
++----------------------------+
+1 row in set (0.01 sec)
+
++----------------------------+
+| str                        |
++----------------------------+
+|
+
+
+
+   **************** |
++----------------------------+
+1 row in set (0.02 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call diamondpatteren(7);
+ERROR 1305 (42000): PROCEDURE acts0923.diamondpatteren does not exist
+mysql> call diamondpattern(7);
++------+------+
+| n    | scnt |
++------+------+
+|    3 |    2 |
++------+------+
+1 row in set (0.01 sec)
+
++------+------+
+| n    | scnt |
++------+------+
+|    5 |    1 |
++------+------+
+1 row in set (0.01 sec)
+
++------+------+
+| n    | scnt |
++------+------+
+|    7 |    0 |
++------+------+
+1 row in set (0.02 sec)
+
++------+------+
+| n    | scnt |
++------+------+
+|    9 |   -1 |
++------+------+
+1 row in set (0.04 sec)
+
++----------------------------+
+| str                        |
++----------------------------+
+|
+
+
+
+   **************** |
++----------------------------+
+1 row in set (0.06 sec)
+
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<num do
+    ->    set str=concat('\n',lpad('',scnt,' '),str,lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call diamondpattern(7);
++------+------+-------+
+| n    | scnt | str   |
++------+------+-------+
+|    3 |    2 |
+   * |
++------+------+-------+
+1 row in set (0.00 sec)
+
++------+------+-------------+
+| n    | scnt | str         |
++------+------+-------------+
+|    5 |    1 |
+
+   **** |
++------+------+-------------+
+1 row in set (0.00 sec)
+
++------+------+--------------------+
+| n    | scnt | str                |
++------+------+--------------------+
+|    7 |    0 |
+
+
+   ********* |
++------+------+--------------------+
+1 row in set (0.01 sec)
+
++--------------------+
+| str                |
++--------------------+
+|
+
+
+   ********* |
++--------------------+
+1 row in set (0.02 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<num do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call diamondpattern(7);
++------+------+-------+
+| n    | scnt | str   |
++------+------+-------+
+|    3 |    2 |
+   * |
++------+------+-------+
+1 row in set (0.00 sec)
+
++------+------+-------------+
+| n    | scnt | str         |
++------+------+-------------+
+|    5 |    1 |
+   *
+  *** |
++------+------+-------------+
+1 row in set (0.01 sec)
+
++------+------+--------------------+
+| n    | scnt | str                |
++------+------+--------------------+
+|    7 |    0 |
+   *
+  ***
+ ***** |
++------+------+--------------------+
+1 row in set (0.01 sec)
+
++--------------------+
+| str                |
++--------------------+
+|
+   *
+  ***
+ ***** |
++--------------------+
+1 row in set (0.02 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call diamondpattern(7);
++------+------+-------+
+| n    | scnt | str   |
++------+------+-------+
+|    3 |    2 |
+   * |
++------+------+-------+
+1 row in set (0.00 sec)
+
++------+------+-------------+
+| n    | scnt | str         |
++------+------+-------------+
+|    5 |    1 |
+   *
+  *** |
++------+------+-------------+
+1 row in set (0.01 sec)
+
++------+------+--------------------+
+| n    | scnt | str                |
++------+------+--------------------+
+|    7 |    0 |
+   *
+  ***
+ ***** |
++------+------+--------------------+
+1 row in set (0.01 sec)
+
++------+------+----------------------------+
+| n    | scnt | str                        |
++------+------+----------------------------+
+|    9 |   -1 |
+   *
+  ***
+ *****
+******* |
++------+------+----------------------------+
+1 row in set (0.01 sec)
+
++----------------------------+
+| str                        |
++----------------------------+
+|
+   *
+  ***
+ *****
+******* |
++----------------------------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> drop procedure diamondpattern;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> set scnt=1;
+    -> set n=num-2
+    -> while n>=1 do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n-2;
+    ->    set scnt=scnt+1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'while n>=1 do
+   set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+   s' at line 15
+mysql> delimiter ;
+mysql>
+mysql>
+mysql>
+mysql>    *
+    ->   ***
+    ->    *
+    -> ^C
+mysql>
+mysql> drop procedure diamondpattern;
+ERROR 1305 (42000): PROCEDURE acts0923.diamondpattern does not exist
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> set scnt=1;
+    -> set n=num-2
+    -> while n>=1 do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n-2;
+    ->    set scnt=scnt+1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'while n>=1 do
+   set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+   s' at line 15
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> drop procedure diamondpattern;
+ERROR 1305 (42000): PROCEDURE acts0923.diamondpattern does not exist
+mysql> delimiter //
+mysql> create procedure diamondpattern(num int)
+    -> begin
+    -> declare str varchar(50) default '';
+    -> declare n int default 1;
+    -> declare scnt int default 0;
+    -> set scnt=floor(num/2);
+    -> while n<=num do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n+2;
+    ->    set scnt=scnt-1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> set scnt=1;
+    -> set n=num-2;
+    -> while n>=1 do
+    ->    set str=concat(str,'\n',lpad('',scnt,' '),lpad('',n,'*'));
+    ->    set n=n-2;
+    ->    set scnt=scnt+1;
+    ->    select n,scnt,str;
+    -> end while;
+    -> select str;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> call diamondpattern(7);
++------+------+-------+
+| n    | scnt | str   |
++------+------+-------+
+|    3 |    2 |
+   * |
++------+------+-------+
+1 row in set (0.00 sec)
+
++------+------+-------------+
+| n    | scnt | str         |
++------+------+-------------+
+|    5 |    1 |
+   *
+  *** |
++------+------+-------------+
+1 row in set (0.00 sec)
+
++------+------+--------------------+
+| n    | scnt | str                |
++------+------+--------------------+
+|    7 |    0 |
+   *
+  ***
+ ***** |
++------+------+--------------------+
+1 row in set (0.01 sec)
+
++------+------+----------------------------+
+| n    | scnt | str                        |
++------+------+----------------------------+
+|    9 |   -1 |
+   *
+  ***
+ *****
+******* |
++------+------+----------------------------+
+1 row in set (0.02 sec)
+
++------+------+-----------------------------------+
+| n    | scnt | str                               |
++------+------+-----------------------------------+
+|    3 |    2 |
+   *
+  ***
+ *****
+*******
+ ***** |
++------+------+-----------------------------------+
+1 row in set (0.04 sec)
+
++------+------+-----------------------------------------+
+| n    | scnt | str                                     |
++------+------+-----------------------------------------+
+|    1 |    3 |
+   *
+  ***
+ *****
+*******
+ *****
+  *** |
++------+------+-----------------------------------------+
+1 row in set (0.07 sec)
+
++------+------+----------------------------------------------+
+| n    | scnt | str                                          |
++------+------+----------------------------------------------+
+|   -1 |    4 |
+   *
+  ***
+ *****
+*******
+ *****
+  ***
+   * |
++------+------+----------------------------------------------+
+1 row in set (0.10 sec)
+
++----------------------------------------------+
+| str                                          |
++----------------------------------------------+
+|
+   *
+  ***
+ *****
+*******
+ *****
+  ***
+   * |
++----------------------------------------------+
+1 row in set (0.15 sec)
+
+Query OK, 0 rows affected (0.17 sec)
+
+mysql>
+mysql> delimiter //
+mysql> create procedure displayemp
+    -> begin
+    -> declare veno,vdeptno,vstop int default 0;
+    -> declare venm,vjob varchar(20);
+    -> declare vsal,vavg double(10,2);
+    -> declare empcurr cursor for select empno,ename,job,sal,deptno from emp;
+    -> declare continue handler for NOT FOUND set vstop=1;
+    -> open emparr;
+    -> label1: loop
+    -> fetch empcurr into veno,venm,vjob,vsal,vdeptno;
+    -> if vstop=1 then
+    ->    leave label1;
+    -> end if;
+    ->    select avg(sal) into vavg
+    ->    from emp
+    ->    where deptno=vdeptno;
+    ->    if vsal<vavg then
+    ->       select veno,venm,vjob,vsal,vavg,vdeptno;
+    ->
+    -> end loop;
+    -> close empcurr;
+    ->
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'begin
+declare veno,vdeptno,vstop int default 0;
+declare venm,vjob varchar(20);
+d' at line 2
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> delimiter //
+mysql> create procedure displayemp
+    -> begin
+    -> declare veno,vdeptno,vstop int default 0;
+    -> declare venm,vjob varchar(20);
+    -> declare vsal,vavg double(10,2);
+    -> declare empcurr cursor for select empno,ename,job,sal,deptno from emp;
+    -> declare continue handler for NOT FOUND set vstop=1;
+    -> open empcurr;
+    -> label1: loop
+    -> fetch empcurr into veno,venm,vjob,vsal,vdeptno;
+    -> if vstop=1 then
+    ->    leave label1;
+    -> end if;
+    ->    select avg(sal) into vavg
+    ->    from emp
+    ->    where deptno=vdeptno;
+    ->    if vsal<vavg then
+    ->       select veno,venm,vjob,vsal,vavg,vdeptno;
+    ->
+    -> end loop;
+    -> close empcurr;
+    ->
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'begin
+declare veno,vdeptno,vstop int default 0;
+declare venm,vjob varchar(20);
+d' at line 2
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> delimiter //
+mysql> create procedure displayemp()
+    -> begin
+    -> declare veno,vdeptno,vstop int default 0;
+    -> declare venm,vjob varchar(20);
+    -> declare vsal,vavg double(10,2);
+    -> declare empcurr cursor for select empno,ename,job,sal,deptno from emp;
+    -> declare continue handler for NOT FOUND set vstop=1;
+    -> open empcurr;
+    -> label1: loop
+    -> fetch empcurr into veno,venm,vjob,vsal,vdeptno;
+    -> if vstop=1 then
+    ->    leave label1;
+    -> end if;
+    ->    select avg(sal) into vavg
+    ->    from emp
+    ->    where deptno=vdeptno;
+    ->    if vsal<vavg then
+    ->       select veno,venm,vjob,vsal,vavg,vdeptno;
+    ->
+    -> end loop;
+    -> close empcurr;
+    ->
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'loop;
+close empcurr;
+
+end' at line 20
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> delimiter //
+mysql> create procedure displayemp()
+    -> begin
+    -> declare veno,vdeptno,vstop int default 0;
+    -> declare venm,vjob varchar(20);
+    -> declare vsal,vavg double(10,2);
+    -> declare empcurr cursor for select empno,ename,job,sal,deptno from emp;
+    -> declare continue handler for NOT FOUND set vstop=1;
+    -> open empcurr;
+    -> label1: loop
+    -> fetch empcurr into veno,venm,vjob,vsal,vdeptno;
+    -> if vstop=1 then
+    ->    leave label1;
+    -> end if;
+    ->    select avg(sal) into vavg
+    ->    from emp
+    ->    where deptno=vdeptno;
+    ->    if vsal<vavg then
+    ->       select veno,venm,vjob,vsal,vavg,vdeptno;
+    ->    end if;
+    -> end loop;
+    -> close empcurr;
+    ->
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> delimiter ;
+mysql>
+mysql>
+mysql> call displayemp();
++------+-------+-------+--------+---------+---------+
+| veno | venm  | vjob  | vsal   | vavg    | vdeptno |
++------+-------+-------+--------+---------+---------+
+| 7369 | SMITH | CLERK | 800.00 | 2438.50 |      20 |
++------+-------+-------+--------+---------+---------+
+1 row in set (0.01 sec)
+
++------+------+----------+---------+---------+---------+
+| veno | venm | vjob     | vsal    | vavg    | vdeptno |
++------+------+----------+---------+---------+---------+
+| 7521 | WARD | SALESMAN | 1250.00 | 1566.67 |      30 |
++------+------+----------+---------+---------+---------+
+1 row in set (0.01 sec)
+
++------+--------+----------+---------+---------+---------+
+| veno | venm   | vjob     | vsal    | vavg    | vdeptno |
++------+--------+----------+---------+---------+---------+
+| 7654 | MARTIN | SALESMAN | 1250.00 | 1566.67 |      30 |
++------+--------+----------+---------+---------+---------+
+1 row in set (0.01 sec)
+
++------+-------+---------+---------+---------+---------+
+| veno | venm  | vjob    | vsal    | vavg    | vdeptno |
++------+-------+---------+---------+---------+---------+
+| 7782 | CLARK | MANAGER | 2450.00 | 3186.33 |      10 |
++------+-------+---------+---------+---------+---------+
+1 row in set (0.04 sec)
+
++------+--------+----------+---------+---------+---------+
+| veno | venm   | vjob     | vsal    | vavg    | vdeptno |
++------+--------+----------+---------+---------+---------+
+| 7844 | TURNER | SALESMAN | 1500.00 | 1566.67 |      30 |
++------+--------+----------+---------+---------+---------+
+1 row in set (0.06 sec)
+
++------+-------+-------+---------+---------+---------+
+| veno | venm  | vjob  | vsal    | vavg    | vdeptno |
++------+-------+-------+---------+---------+---------+
+| 7876 | ADAMS | CLERK | 1100.00 | 2438.50 |      20 |
++------+-------+-------+---------+---------+---------+
+1 row in set (0.07 sec)
+
++------+-------+-------+--------+---------+---------+
+| veno | venm  | vjob  | vsal   | vavg    | vdeptno |
++------+-------+-------+--------+---------+---------+
+| 7900 | JAMES | CLERK | 950.00 | 1566.67 |      30 |
++------+-------+-------+--------+---------+---------+
+1 row in set (0.09 sec)
+
++------+--------+-------+---------+---------+---------+
+| veno | venm   | vjob  | vsal    | vavg    | vdeptno |
++------+--------+-------+---------+---------+---------+
+| 7934 | MILLER | CLERK | 1300.00 | 3186.33 |      10 |
++------+--------+-------+---------+---------+---------+
+1 row in set (0.10 sec)
+
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> SET GLOBAL log_bin_trust_function_creators = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter //
+mysql> create function calcexp(hdate date) returns int
+    -> begin
+    ->    return floor(datediff(curdate(),hdate)/365)
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end' at line 4
+mysql> delimiter //
+mysql> create function calcexp(hdate date) returns int
+    -> begin
+    ->    return floor(datediff(curdate(),hdate)/365);
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select empno,ename,sal,calcexp(hiredate)
+    -> from emp;
+    -> //
++-------+--------+---------+-------------------+
+| empno | ename  | sal     | calcexp(hiredate) |
++-------+--------+---------+-------------------+
+|   111 | dddd   | 3456.00 |                23 |
+|   112 | eee    | 3456.00 |                23 |
+|   113 | eee111 | 3456.00 |                23 |
+|   123 | sss    | 3456.00 |                23 |
+|  1234 | xxx    | 4567.00 |                23 |
+|  7369 | SMITH  |  800.00 |                42 |
+|  7499 | ALLEN  | 1600.00 |                42 |
+|  7521 | WARD   | 1250.00 |                42 |
+|  7566 | JONES  | 2975.00 |                42 |
+|  7654 | MARTIN | 1250.00 |                42 |
+|  7698 | BLAKE  | 2850.00 |                42 |
+|  7782 | CLARK  | 2450.00 |                42 |
+|  7788 | SCOTT  | 3000.00 |                40 |
+|  7839 | KING   | 5000.00 |                41 |
+|  7844 | TURNER | 1500.00 |                42 |
+|  7876 | ADAMS  | 1100.00 |                40 |
+|  7900 | JAMES  |  950.00 |                41 |
+|  7902 | FORD   | 3300.00 |                41 |
+|  7934 | MILLER | 1300.00 |                41 |
++-------+--------+---------+-------------------+
+19 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,calcexp(hiredate)
+    -> from emp
+    -> where calcexp(hiredate)<40;
+    -> //
++-------+--------+---------+-------------------+
+| empno | ename  | sal     | calcexp(hiredate) |
++-------+--------+---------+-------------------+
+|   111 | dddd   | 3456.00 |                23 |
+|   112 | eee    | 3456.00 |                23 |
+|   113 | eee111 | 3456.00 |                23 |
+|   123 | sss    | 3456.00 |                23 |
+|  1234 | xxx    | 4567.00 |                23 |
++-------+--------+---------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> create function generateemail(enm varchar(20),job varchar(20))
+    -> returns varchar(30)
+    -> begin
+    ->   return concat(substr(enm,1,3),".",substr(job,1,3),'@mycompany.com')
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end' at line 5
+mysql> create function generateemail(enm varchar(20),job varchar(20))
+    -> returns varchar(30)
+    -> begin
+    ->   return concat(substr(enm,1,3),".",substr(job,1,3),'@mycompany.com');
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select empno,ename,jdb,generateemail(ename,job)
+    -> from emp;
+    -> //
+ERROR 1054 (42S22): Unknown column 'jdb' in 'field list'
+mysql> select empno,ename,job,generateemail(ename,job)
+    -> from emp;
+    -> //
++-------+--------+-----------+--------------------------+
+| empno | ename  | job       | generateemail(ename,job) |
++-------+--------+-----------+--------------------------+
+|   111 | dddd   | clerk     | ddd.cle@mycompany.com    |
+|   112 | eee    | clerk     | eee.cle@mycompany.com    |
+|   113 | eee111 | clerk     | eee.cle@mycompany.com    |
+|   123 | sss    | clerk     | sss.cle@mycompany.com    |
+|  1234 | xxx    | clerk     | xxx.cle@mycompany.com    |
+|  7369 | SMITH  | CLERK     | SMI.CLE@mycompany.com    |
+|  7499 | ALLEN  | SALESMAN  | ALL.SAL@mycompany.com    |
+|  7521 | WARD   | SALESMAN  | WAR.SAL@mycompany.com    |
+|  7566 | JONES  | MANAGER   | JON.MAN@mycompany.com    |
+|  7654 | MARTIN | SALESMAN  | MAR.SAL@mycompany.com    |
+|  7698 | BLAKE  | MANAGER   | BLA.MAN@mycompany.com    |
+|  7782 | CLARK  | MANAGER   | CLA.MAN@mycompany.com    |
+|  7788 | SCOTT  | ANALYST   | SCO.ANA@mycompany.com    |
+|  7839 | KING   | PRESIDENT | KIN.PRE@mycompany.com    |
+|  7844 | TURNER | SALESMAN  | TUR.SAL@mycompany.com    |
+|  7876 | ADAMS  | CLERK     | ADA.CLE@mycompany.com    |
+|  7900 | JAMES  | CLERK     | JAM.CLE@mycompany.com    |
+|  7902 | FORD   | ANALYST   | FOR.ANA@mycompany.com    |
+|  7934 | MILLER | CLERK     | MIL.CLE@mycompany.com    |
++-------+--------+-----------+--------------------------+
+19 rows in set (0.00 sec)
+
+mysql> create table emp_audit(
+    -> deptno int, olddname varchar(20),
+    -> newdname varchar(20),
+    -> oldloc varchar(20),
+    -> newloc varchar(20),
+    -> uname varchar(20),
+    -> op_date datetime);
+    -> //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> //-audit;
+ERROR:
+No query specified
+
+    -> ^C
+mysql> alter table emp_audit to dept_audit;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to dept_audit' at line 1
+mysql> alter table emp_audit rename to dept_audit;
+    -> //
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc dept_audit;
+    -> //
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptno   | int         | YES  |     | NULL    |       |
+| olddname | varchar(20) | YES  |     | NULL    |       |
+| newdname | varchar(20) | YES  |     | NULL    |       |
+| oldloc   | varchar(20) | YES  |     | NULL    |       |
+| newloc   | varchar(20) | YES  |     | NULL    |       |
+| uname    | varchar(20) | YES  |     | NULL    |       |
+| op_date  | datetime    | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> alter table dept_audit
+    -> add action varchar(20);
+    -> //
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dept_audit;
+    -> //
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptno   | int         | YES  |     | NULL    |       |
+| olddname | varchar(20) | YES  |     | NULL    |       |
+| newdname | varchar(20) | YES  |     | NULL    |       |
+| oldloc   | varchar(20) | YES  |     | NULL    |       |
+| newloc   | varchar(20) | YES  |     | NULL    |       |
+| uname    | varchar(20) | YES  |     | NULL    |       |
+| op_date  | datetime    | YES  |     | NULL    |       |
+| action   | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> create trigger dept_monitor
+    -> before update on dept for each row
+    -> begin
+    ->   insert into dept_audit values(old.deptno,
+    ->   old.dename,
+    ->   new.dname,
+    ->   old.dloc,
+    ->   new.dloc,
+    ->   user(),
+    ->   now(),
+    ->   'insert');
+    ->
+    -> end//
+ERROR 1054 (42S22): Unknown column 'dename' in 'OLD'
+mysql> create trigger dept_monitor
+    -> before update on dept for each row
+    -> begin
+    ->   insert into dept_audit values(old.deptno,
+    ->   old.dname,
+    ->   new.dname,
+    ->   old.dloc,
+    ->   new.dloc,
+    ->   user(),
+    ->   now(),
+    ->   'insert');
+    ->
+    -> end//
+ERROR 1054 (42S22): Unknown column 'dloc' in 'OLD'
+mysql> desc dept;
+    -> //
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| DEPTNO | int         | NO   | PRI | NULL    |       |
+| DNAME  | varchar(14) | YES  |     | NULL    |       |
+| LOC    | varchar(13) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create trigger dept_monitor
+    -> before update on dept for each row
+    -> begin
+    ->   insert into dept_audit values(old.deptno,
+    ->   old.dname,
+    ->   new.dname,
+    ->   old.loc,
+    ->   new.loc,
+    ->   user(),
+    ->   now(),
+    ->   'insert');
+    ->
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from dept;
+    -> //
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | purchase   | pune     |
+|     51 | purchase   | pune     |
++--------+------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> update emp
+    -> set deptno=55
+    -> where deptno=51;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> update det
+    -> set deptno=55
+    -> where deptno=51;
+    -> //
+ERROR 1146 (42S02): Table 'acts0923.det' doesn't exist
+mysql> update dept
+    -> set deptno=55
+    -> where deptno=51;
+    -> //
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from dept_audit;
+    -> //
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+| deptno | olddname | newdname | oldloc | newloc | uname          | op_date             | action |
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+|     51 | purchase | purchase | pune   | pune   | root@localhost | 2023-10-21 14:50:37 | insert |
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> update dept
+    -> where dname='sales',loc='pune'
+    -> where deptno=51;
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where dname='sales',loc='pune'
+where deptno=51' at line 2
+mysql> update dept
+    -> set dname='sales',loc='pune'
+    -> where deptno=55;
+    -> //
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from dept_edit;
+    -> //
+ERROR 1146 (42S02): Table 'acts0923.dept_edit' doesn't exist
+mysql> select * from dept_audit;
+    -> //
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+| deptno | olddname | newdname | oldloc | newloc | uname          | op_date             | action |
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+|     51 | purchase | purchase | pune   | pune   | root@localhost | 2023-10-21 14:50:37 | insert |
+|     55 | purchase | sales    | pune   | pune   | root@localhost | 2023-10-21 14:52:32 | insert |
++--------+----------+----------+--------+--------+----------------+---------------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> create trigger dept_monitor1
+    -> before delete on dept for each row
+    -> begin
+    ->   insert into dept_audit values(old.deptno,
+    ->   old.dname
+    ->   null,
+    ->   old.loc,
+    ->   null,
+    ->   user(),
+    ->   now(),
+    ->   'delete');
+    ->
+    -> //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null,
+  old.loc,
+  null,
+  user(),
+  now(),
+  'delete')' at line 6
+mysql> create trigger dept_monitor1
+    -> before delete on dept for each row
+    -> begin
+    ->   insert into dept_audit values(old.deptno,
+    ->   old.dname,
+    ->   null,
+    ->   old.loc,
+    ->   null,
+    ->   user(),
+    ->   now(),
+    ->   'delete');
+    ->
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>

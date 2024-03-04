@@ -1,0 +1,657 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use test;
+Database changed
+mysql> show tables
+    -> ;
++----------------------+
+| Tables_in_test       |
++----------------------+
+| account_2            |
+| addr22               |
+| addr44               |
+| addr55               |
+| addr66               |
+| address              |
+| address77            |
+| addressmany          |
+| addressmany1         |
+| addresstab1          |
+| addresstab1_usertab1 |
+| all_emp              |
+| allemp               |
+| bonus                |
+| booking              |
+| category             |
+| category1            |
+| contable             |
+| conttab22            |
+| course               |
+| course_back          |
+| course_backup        |
+| course_faculty       |
+| customer             |
+| customer_2           |
+| custtab1             |
+| custtab11            |
+| department           |
+| dept                 |
+| dept_info            |
+| dummy                |
+| emp                  |
+| emp11                |
+| emp12                |
+| emp_india            |
+| emp_japan            |
+| emp_proj11           |
+| emp_us               |
+| empheirarchy22       |
+| emphirarchy11        |
+| employee             |
+| employee_history     |
+| emptab1              |
+| emptab11             |
+| event                |
+| faculty              |
+| hibernate_sequence   |
+| image_data           |
+| mgr10                |
+| mychild_3            |
+| myemployee           |
+| mypro22              |
+| myprod11             |
+| myprodtab            |
+| myprodtab22          |
+| myprodtab33          |
+| myprodtab44          |
+| myproduct            |
+| myproduct_table      |
+| myproducttable       |
+| mystud               |
+| mytab_3              |
+| mytab_51             |
+| mytext               |
+| myuser               |
+| myuser1              |
+| myuser12             |
+| myuser22             |
+| nonperishableprod    |
+| orderitem            |
+| perishableprod       |
+| person11             |
+| persontab            |
+| pertab11             |
+| prod11               |
+| prod12               |
+| prod22               |
+| produ_cat            |
+| product              |
+| product77            |
+| product_2            |
+| product_analysis     |
+| product_data         |
+| project11            |
+| quetions             |
+| registeruser         |
+| role                 |
+| salariedemployee     |
+| salgrade             |
+| saltab22             |
+| saltable             |
+| stud12               |
+| stud22               |
+| student              |
+| student_2            |
+| student_3            |
+| studentiacsd         |
+| testdata             |
+| testmytab            |
+| user                 |
+| user11               |
+| user1234s            |
+| user123s             |
+| user22               |
+| user33               |
+| user44               |
+| user55               |
+| user66               |
+| user77               |
+| user_role            |
+| useraddr77           |
+| useraddress          |
+| userentity           |
+| usermany             |
+| usermany1            |
+| usertab              |
+| usertab1             |
+| worker               |
++----------------------+
+118 rows in set (0.01 sec)
+
+mysql> select * from emp_india;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  103 | Shivesh | India    |
+|  104 | Shivali | India    |
++------+---------+----------+
+2 rows in set (0.01 sec)
+
+mysql> select * from emp_japan;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  103 | Shivesh | India    |
+|  104 | Ashish  | Japan    |
++------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from emp_us;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  100 | Rajan   | India    |
+|  101 | Rajat   | US       |
+|  103 | Shivesh | India    |
++------+---------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from emp_india
+    -> union
+    -> select * from emp_japan
+    -> union
+    -> select * from emp_us;
++------+---------+----------+
+| id   | name    | location |
++------+---------+----------+
+|  103 | Shivesh | India    |
+|  104 | Shivali | India    |
+|  104 | Ashish  | Japan    |
+|  100 | Rajan   | India    |
+|  101 | Rajat   | US       |
++------+---------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select id,name,location,'India'
+    -> from emp_india
+    -> union
+    -> select id,name,location,'US' from emp_us
+    -> union
+    -> select id,name,location,'Japan' from emp_japan;
++------+---------+----------+-------+
+| id   | name    | location | India |
++------+---------+----------+-------+
+|  103 | Shivesh | India    | India |
+|  104 | Shivali | India    | India |
+|  100 | Rajan   | India    | US    |
+|  101 | Rajat   | US       | US    |
+|  103 | Shivesh | India    | US    |
+|  103 | Shivesh | India    | Japan |
+|  104 | Ashish  | Japan    | Japan |
++------+---------+----------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * frpm emp order by sal
+    -> desc^C
+mysql> select * from emp order by sal desc
+    -> limit 4;
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+4 rows in set (0.01 sec)
+
+mysql> select * from emp order by sal desc
+    -> limit 5;
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select count(*)
+    -> from (select distinct sal from emp) e
+    -> where e.sal>3456;
++----------+
+| count(*) |
++----------+
+|        2 |
++----------+
+1 row in set (0.01 sec)
+
+mysql> from (select distinct sal from emp) e
+    -> where e.sal>3456;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from (select distinct sal from emp) e
+where e.sal>3456' at line 1
+mysql> select count(*)
+    -> from (select distinct sal from emp) e
+    -> where e.sal>5000;
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select *
+    -> from emp m
+    -> where 4>(select count(*) from (select distinct sal from emp) e
+    -> where e.sal>m.sal);
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|  7788 | SCOTT | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp m
+    -> where 4>(select count(*) from (select distinct sal from emp) e
+    -> where e.sal>m.sal
+    -> order by sal;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 5
+mysql> select *
+    -> from emp m
+    -> where 4>(select count(*) from (select distinct sal from emp) e
+    -> where e.sal>m.sal)
+    -> order by sal;
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|  7788 | SCOTT | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select *
+    -> from emp m
+    -> where 5>(select count(*) from (select distinct sal from emp) e
+    -> where e.sal>m.sal)
+    -> order by sal desc;
++-------+-------+-----------+------+------------+----------+---------+--------+
+| EMPNO | ENAME | JOB       | MGR  | HIREDATE   | SAL      | COMM    | DEPTNO |
++-------+-------+-----------+------+------------+----------+---------+--------+
+|   123 | Rajan | Designer  | 7902 | 2017-01-01 | 34567.00 | 3456.00 |     10 |
+|  7839 | KING  | PRESIDENT | NULL | 1981-11-17 |  5000.00 |    NULL |     10 |
+|  1211 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     10 |
+|  1212 | xxxx  | mmm       | 7902 | 2018-02-02 |  3456.00 |  456.00 |     20 |
+|  7788 | SCOTT | ANALYST   | 7566 | 1982-12-09 |  3000.00 |    NULL |     20 |
+|  7902 | FORD  | ANALYST   | 7566 | 1981-12-03 |  3000.00 |    NULL |     20 |
+|  7566 | JONES | MANAGER   | 7839 | 1981-04-02 |  2975.00 |    NULL |     20 |
++-------+-------+-----------+------+------------+----------+---------+--------+
+7 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,row_number() over()
+    -> from emp;
++-------+--------+----------+--------+---------------------+
+| empno | ename  | sal      | deptno | row_number() over() |
++-------+--------+----------+--------+---------------------+
+|  7369 | SMITH  |  1100.00 |     20 |                   1 |
+|  7499 | ALLEN  |  1600.00 |     30 |                   2 |
+|  7521 | WARD   |  1250.00 |     30 |                   3 |
+|  7566 | JONES  |  2975.00 |     20 |                   4 |
+|  7654 | MARTIN |  1250.00 |     30 |                   5 |
+|  7698 | BLAKE  |  2850.00 |     30 |                   6 |
+|  7782 | CLARK  |  2450.00 |     10 |                   7 |
+|  7788 | SCOTT  |  3000.00 |     20 |                   8 |
+|  7839 | KING   |  5000.00 |     10 |                   9 |
+|  7844 | TURNER |  1500.00 |     30 |                  10 |
+|  7876 | ADAMS  |  1100.00 |     20 |                  11 |
+|  7900 | JAMES  |   950.00 |     30 |                  12 |
+|  7902 | FORD   |  3000.00 |     20 |                  13 |
+|  7934 | MILLER |  1300.00 |     10 |                  14 |
+|   123 | Rajan  | 34567.00 |     10 |                  15 |
+|  1211 | xxxx   |  3456.00 |     10 |                  16 |
+|  1212 | xxxx   |  3456.00 |     20 |                  17 |
++-------+--------+----------+--------+---------------------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,row_number() over() rn,row_number() over(partion by deptno) rn1
+    -> from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by deptno) rn1
+from emp' at line 1
+mysql> select empno,ename,sal,deptno,row_number() over() rn,row_number() over(partition by deptno) rn1
+    -> from emp;
++-------+--------+----------+--------+----+-----+
+| empno | ename  | sal      | deptno | rn | rn1 |
++-------+--------+----------+--------+----+-----+
+|  7782 | CLARK  |  2450.00 |     10 |  7 |   1 |
+|  7839 | KING   |  5000.00 |     10 |  9 |   2 |
+|  7934 | MILLER |  1300.00 |     10 | 14 |   3 |
+|   123 | Rajan  | 34567.00 |     10 | 15 |   4 |
+|  1211 | xxxx   |  3456.00 |     10 | 16 |   5 |
+|  7369 | SMITH  |  1100.00 |     20 |  1 |   1 |
+|  7566 | JONES  |  2975.00 |     20 |  4 |   2 |
+|  7788 | SCOTT  |  3000.00 |     20 |  8 |   3 |
+|  7876 | ADAMS  |  1100.00 |     20 | 11 |   4 |
+|  7902 | FORD   |  3000.00 |     20 | 13 |   5 |
+|  1212 | xxxx   |  3456.00 |     20 | 17 |   6 |
+|  7499 | ALLEN  |  1600.00 |     30 |  2 |   1 |
+|  7521 | WARD   |  1250.00 |     30 |  3 |   2 |
+|  7654 | MARTIN |  1250.00 |     30 |  5 |   3 |
+|  7698 | BLAKE  |  2850.00 |     30 |  6 |   4 |
+|  7844 | TURNER |  1500.00 |     30 | 10 |   5 |
+|  7900 | JAMES  |   950.00 |     30 | 12 |   6 |
++-------+--------+----------+--------+----+-----+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,row_number() over() rn,row_number() over(partion by deptno order by sal desc) rn1
+    -> from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'by deptno order by sal desc) rn1
+from emp' at line 1
+mysql> select empno,ename,sal,deptno,row_number() over() rn,
+    -> row_number() over (partition by deptno order by sal desc) rn1
+    -> from emp;
++-------+--------+----------+--------+----+-----+
+| empno | ename  | sal      | deptno | rn | rn1 |
++-------+--------+----------+--------+----+-----+
+|   123 | Rajan  | 34567.00 |     10 | 15 |   1 |
+|  7839 | KING   |  5000.00 |     10 |  9 |   2 |
+|  1211 | xxxx   |  3456.00 |     10 | 16 |   3 |
+|  7782 | CLARK  |  2450.00 |     10 |  7 |   4 |
+|  7934 | MILLER |  1300.00 |     10 | 14 |   5 |
+|  1212 | xxxx   |  3456.00 |     20 | 17 |   1 |
+|  7788 | SCOTT  |  3000.00 |     20 |  8 |   2 |
+|  7902 | FORD   |  3000.00 |     20 | 13 |   3 |
+|  7566 | JONES  |  2975.00 |     20 |  4 |   4 |
+|  7369 | SMITH  |  1100.00 |     20 |  1 |   5 |
+|  7876 | ADAMS  |  1100.00 |     20 | 11 |   6 |
+|  7698 | BLAKE  |  2850.00 |     30 |  6 |   1 |
+|  7499 | ALLEN  |  1600.00 |     30 |  2 |   2 |
+|  7844 | TURNER |  1500.00 |     30 | 10 |   3 |
+|  7521 | WARD   |  1250.00 |     30 |  3 |   4 |
+|  7654 | MARTIN |  1250.00 |     30 |  5 |   5 |
+|  7900 | JAMES  |   950.00 |     30 | 12 |   6 |
++-------+--------+----------+--------+----+-----+
+17 rows in set (0.00 sec)
+
+mysql> Select * from (select empno,ename,sal,deptno,
+    -> row_number() over (partition by deptno order by sal desc) rn1
+    -> from emp) e
+    -> Where e.rn1<=2
+    -> ;
++-------+-------+----------+--------+-----+
+| empno | ename | sal      | deptno | rn1 |
++-------+-------+----------+--------+-----+
+|   123 | Rajan | 34567.00 |     10 |   1 |
+|  7839 | KING  |  5000.00 |     10 |   2 |
+|  1212 | xxxx  |  3456.00 |     20 |   1 |
+|  7788 | SCOTT |  3000.00 |     20 |   2 |
+|  7698 | BLAKE |  2850.00 |     30 |   1 |
+|  7499 | ALLEN |  1600.00 |     30 |   2 |
++-------+-------+----------+--------+-----+
+6 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,
+    -> row_number() over (partition by deptno order by sal desc) rn,
+    -> rank() over(partition by deptno order by sal desc) rank,
+    -> dense_rank() over(partion by deptno order by sal desc) drank
+    -> from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank,
+dense_rank() over(partion by deptno order by sal desc) drank
+from emp' at line 3
+mysql>  select empno,ename,sal,deptno,
+    ->   row_number() over (partition by deptno order by sal desc) rn,
+    ->  rank() over(partition by deptno order by sal desc) rank,
+    ->  dense_rank() over(partition by deptno order by sal desc) drank
+    -> from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank,
+ dense_rank() over(partition by deptno order by sal desc) drank
+from emp' at line 3
+mysql>  select empno,ename,sal,deptno,
+    ->   row_number() over (partition by deptno order by sal desc) rn,
+    ->  rank() over(partition by deptno order by sal desc) rank,
+    ->  dense_rank() over(partition by deptno order by sal desc) drank^C
+mysql> select empno,ename,sal,deptno,
+    ->   row_number() over (partition by deptno order by sal desc) rn,
+    ->  rank() over(partition by deptno order by sal desc) rank
+    ->  from emp;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank
+ from emp' at line 3
+mysql> select empno,ename,sal,deptno,
+    ->   row_number() over (partition by deptno order by sal desc) rn,
+    ->  rank() over(partition by deptno order by sal desc) rank_num
+    -> from emp;
++-------+--------+----------+--------+----+----------+
+| empno | ename  | sal      | deptno | rn | rank_num |
++-------+--------+----------+--------+----+----------+
+|   123 | Rajan  | 34567.00 |     10 |  1 |        1 |
+|  7839 | KING   |  5000.00 |     10 |  2 |        2 |
+|  1211 | xxxx   |  3456.00 |     10 |  3 |        3 |
+|  7782 | CLARK  |  2450.00 |     10 |  4 |        4 |
+|  7934 | MILLER |  1300.00 |     10 |  5 |        5 |
+|  1212 | xxxx   |  3456.00 |     20 |  1 |        1 |
+|  7788 | SCOTT  |  3000.00 |     20 |  2 |        2 |
+|  7902 | FORD   |  3000.00 |     20 |  3 |        2 |
+|  7566 | JONES  |  2975.00 |     20 |  4 |        4 |
+|  7369 | SMITH  |  1100.00 |     20 |  5 |        5 |
+|  7876 | ADAMS  |  1100.00 |     20 |  6 |        5 |
+|  7698 | BLAKE  |  2850.00 |     30 |  1 |        1 |
+|  7499 | ALLEN  |  1600.00 |     30 |  2 |        2 |
+|  7844 | TURNER |  1500.00 |     30 |  3 |        3 |
+|  7521 | WARD   |  1250.00 |     30 |  4 |        4 |
+|  7654 | MARTIN |  1250.00 |     30 |  5 |        4 |
+|  7900 | JAMES  |   950.00 |     30 |  6 |        6 |
++-------+--------+----------+--------+----+----------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,
+    ->   row_number() over (partition by deptno order by sal desc) rn,
+    ->  rank() over(partition by deptno order by sal desc) rank_num,
+    ->  dense_rank() over(partition by deptno order by sal desc) drank
+    -> from emp;
++-------+--------+----------+--------+----+----------+-------+
+| empno | ename  | sal      | deptno | rn | rank_num | drank |
++-------+--------+----------+--------+----+----------+-------+
+|   123 | Rajan  | 34567.00 |     10 |  1 |        1 |     1 |
+|  7839 | KING   |  5000.00 |     10 |  2 |        2 |     2 |
+|  1211 | xxxx   |  3456.00 |     10 |  3 |        3 |     3 |
+|  7782 | CLARK  |  2450.00 |     10 |  4 |        4 |     4 |
+|  7934 | MILLER |  1300.00 |     10 |  5 |        5 |     5 |
+|  1212 | xxxx   |  3456.00 |     20 |  1 |        1 |     1 |
+|  7788 | SCOTT  |  3000.00 |     20 |  2 |        2 |     2 |
+|  7902 | FORD   |  3000.00 |     20 |  3 |        2 |     2 |
+|  7566 | JONES  |  2975.00 |     20 |  4 |        4 |     3 |
+|  7369 | SMITH  |  1100.00 |     20 |  5 |        5 |     4 |
+|  7876 | ADAMS  |  1100.00 |     20 |  6 |        5 |     4 |
+|  7698 | BLAKE  |  2850.00 |     30 |  1 |        1 |     1 |
+|  7499 | ALLEN  |  1600.00 |     30 |  2 |        2 |     2 |
+|  7844 | TURNER |  1500.00 |     30 |  3 |        3 |     3 |
+|  7521 | WARD   |  1250.00 |     30 |  4 |        4 |     4 |
+|  7654 | MARTIN |  1250.00 |     30 |  5 |        4 |     4 |
+|  7900 | JAMES  |   950.00 |     30 |  6 |        6 |     5 |
++-------+--------+----------+--------+----+----------+-------+
+17 rows in set (0.00 sec)
+
+mysql> Select empno,ename,sal,deptno,first_value(sal) over(partition by deptno) fv
+    -> From emp;
++-------+--------+----------+--------+---------+
+| empno | ename  | sal      | deptno | fv      |
++-------+--------+----------+--------+---------+
+|  7782 | CLARK  |  2450.00 |     10 | 2450.00 |
+|  7839 | KING   |  5000.00 |     10 | 2450.00 |
+|  7934 | MILLER |  1300.00 |     10 | 2450.00 |
+|   123 | Rajan  | 34567.00 |     10 | 2450.00 |
+|  1211 | xxxx   |  3456.00 |     10 | 2450.00 |
+|  7369 | SMITH  |  1100.00 |     20 | 1100.00 |
+|  7566 | JONES  |  2975.00 |     20 | 1100.00 |
+|  7788 | SCOTT  |  3000.00 |     20 | 1100.00 |
+|  7876 | ADAMS  |  1100.00 |     20 | 1100.00 |
+|  7902 | FORD   |  3000.00 |     20 | 1100.00 |
+|  1212 | xxxx   |  3456.00 |     20 | 1100.00 |
+|  7499 | ALLEN  |  1600.00 |     30 | 1600.00 |
+|  7521 | WARD   |  1250.00 |     30 | 1600.00 |
+|  7654 | MARTIN |  1250.00 |     30 | 1600.00 |
+|  7698 | BLAKE  |  2850.00 |     30 | 1600.00 |
+|  7844 | TURNER |  1500.00 |     30 | 1600.00 |
+|  7900 | JAMES  |   950.00 |     30 | 1600.00 |
++-------+--------+----------+--------+---------+
+17 rows in set (0.00 sec)
+
+mysql> select deptno,ename,sum(sal)
+    -> from emp e
+    -> group by deptno;
++--------+-------+----------+
+| deptno | ename | sum(sal) |
++--------+-------+----------+
+|     20 | SMITH | 14631.00 |
+|     30 | ALLEN |  9400.00 |
+|     10 | CLARK | 46773.00 |
++--------+-------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select deptno,ename,sum(sal) over(partition by deptno)
+    -> from emp;
++--------+--------+------------------------------------+
+| deptno | ename  | sum(sal) over(partition by deptno) |
++--------+--------+------------------------------------+
+|     10 | CLARK  |                           46773.00 |
+|     10 | KING   |                           46773.00 |
+|     10 | MILLER |                           46773.00 |
+|     10 | Rajan  |                           46773.00 |
+|     10 | xxxx   |                           46773.00 |
+|     20 | SMITH  |                           14631.00 |
+|     20 | JONES  |                           14631.00 |
+|     20 | SCOTT  |                           14631.00 |
+|     20 | ADAMS  |                           14631.00 |
+|     20 | FORD   |                           14631.00 |
+|     20 | xxxx   |                           14631.00 |
+|     30 | ALLEN  |                            9400.00 |
+|     30 | WARD   |                            9400.00 |
+|     30 | MARTIN |                            9400.00 |
+|     30 | BLAKE  |                            9400.00 |
+|     30 | TURNER |                            9400.00 |
+|     30 | JAMES  |                            9400.00 |
++--------+--------+------------------------------------+
+17 rows in set (0.00 sec)
+
+mysql> select deptno,ename,lag(sal,1) over (partition by deptno)
+    -> from emp;
++--------+--------+---------------------------------------+
+| deptno | ename  | lag(sal,1) over (partition by deptno) |
++--------+--------+---------------------------------------+
+|     10 | CLARK  |                                  NULL |
+|     10 | KING   |                               2450.00 |
+|     10 | MILLER |                               5000.00 |
+|     10 | Rajan  |                               1300.00 |
+|     10 | xxxx   |                              34567.00 |
+|     20 | SMITH  |                                  NULL |
+|     20 | JONES  |                               1100.00 |
+|     20 | SCOTT  |                               2975.00 |
+|     20 | ADAMS  |                               3000.00 |
+|     20 | FORD   |                               1100.00 |
+|     20 | xxxx   |                               3000.00 |
+|     30 | ALLEN  |                                  NULL |
+|     30 | WARD   |                               1600.00 |
+|     30 | MARTIN |                               1250.00 |
+|     30 | BLAKE  |                               1250.00 |
+|     30 | TURNER |                               2850.00 |
+|     30 | JAMES  |                               1500.00 |
++--------+--------+---------------------------------------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,lag(sal,1) over (partition by deptno)
+    -> from emp;
++-------+--------+----------+--------+---------------------------------------+
+| empno | ename  | sal      | deptno | lag(sal,1) over (partition by deptno) |
++-------+--------+----------+--------+---------------------------------------+
+|  7782 | CLARK  |  2450.00 |     10 |                                  NULL |
+|  7839 | KING   |  5000.00 |     10 |                               2450.00 |
+|  7934 | MILLER |  1300.00 |     10 |                               5000.00 |
+|   123 | Rajan  | 34567.00 |     10 |                               1300.00 |
+|  1211 | xxxx   |  3456.00 |     10 |                              34567.00 |
+|  7369 | SMITH  |  1100.00 |     20 |                                  NULL |
+|  7566 | JONES  |  2975.00 |     20 |                               1100.00 |
+|  7788 | SCOTT  |  3000.00 |     20 |                               2975.00 |
+|  7876 | ADAMS  |  1100.00 |     20 |                               3000.00 |
+|  7902 | FORD   |  3000.00 |     20 |                               1100.00 |
+|  1212 | xxxx   |  3456.00 |     20 |                               3000.00 |
+|  7499 | ALLEN  |  1600.00 |     30 |                                  NULL |
+|  7521 | WARD   |  1250.00 |     30 |                               1600.00 |
+|  7654 | MARTIN |  1250.00 |     30 |                               1250.00 |
+|  7698 | BLAKE  |  2850.00 |     30 |                               1250.00 |
+|  7844 | TURNER |  1500.00 |     30 |                               2850.00 |
+|  7900 | JAMES  |   950.00 |     30 |                               1500.00 |
++-------+--------+----------+--------+---------------------------------------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,lag(sal,2) over (partition by deptno) lag_data_2
+    -> from emp;
++-------+--------+----------+--------+------------+
+| empno | ename  | sal      | deptno | lag_data_2 |
++-------+--------+----------+--------+------------+
+|  7782 | CLARK  |  2450.00 |     10 |       NULL |
+|  7839 | KING   |  5000.00 |     10 |       NULL |
+|  7934 | MILLER |  1300.00 |     10 |    2450.00 |
+|   123 | Rajan  | 34567.00 |     10 |    5000.00 |
+|  1211 | xxxx   |  3456.00 |     10 |    1300.00 |
+|  7369 | SMITH  |  1100.00 |     20 |       NULL |
+|  7566 | JONES  |  2975.00 |     20 |       NULL |
+|  7788 | SCOTT  |  3000.00 |     20 |    1100.00 |
+|  7876 | ADAMS  |  1100.00 |     20 |    2975.00 |
+|  7902 | FORD   |  3000.00 |     20 |    3000.00 |
+|  1212 | xxxx   |  3456.00 |     20 |    1100.00 |
+|  7499 | ALLEN  |  1600.00 |     30 |       NULL |
+|  7521 | WARD   |  1250.00 |     30 |       NULL |
+|  7654 | MARTIN |  1250.00 |     30 |    1600.00 |
+|  7698 | BLAKE  |  2850.00 |     30 |    1250.00 |
+|  7844 | TURNER |  1500.00 |     30 |    1250.00 |
+|  7900 | JAMES  |   950.00 |     30 |    2850.00 |
++-------+--------+----------+--------+------------+
+17 rows in set (0.00 sec)
+
+mysql> select empno,ename,sal,deptno,lead(sal,2) over (partition by deptno) lead_data_2
+    -> from emp;
++-------+--------+----------+--------+-------------+
+| empno | ename  | sal      | deptno | lead_data_2 |
++-------+--------+----------+--------+-------------+
+|  7782 | CLARK  |  2450.00 |     10 |     1300.00 |
+|  7839 | KING   |  5000.00 |     10 |    34567.00 |
+|  7934 | MILLER |  1300.00 |     10 |     3456.00 |
+|   123 | Rajan  | 34567.00 |     10 |        NULL |
+|  1211 | xxxx   |  3456.00 |     10 |        NULL |
+|  7369 | SMITH  |  1100.00 |     20 |     3000.00 |
+|  7566 | JONES  |  2975.00 |     20 |     1100.00 |
+|  7788 | SCOTT  |  3000.00 |     20 |     3000.00 |
+|  7876 | ADAMS  |  1100.00 |     20 |     3456.00 |
+|  7902 | FORD   |  3000.00 |     20 |        NULL |
+|  1212 | xxxx   |  3456.00 |     20 |        NULL |
+|  7499 | ALLEN  |  1600.00 |     30 |     1250.00 |
+|  7521 | WARD   |  1250.00 |     30 |     2850.00 |
+|  7654 | MARTIN |  1250.00 |     30 |     1500.00 |
+|  7698 | BLAKE  |  2850.00 |     30 |      950.00 |
+|  7844 | TURNER |  1500.00 |     30 |        NULL |
+|  7900 | JAMES  |   950.00 |     30 |        NULL |
++-------+--------+----------+--------+-------------+
+17 rows in set (0.00 sec)
+
+mysql>

@@ -1,0 +1,27 @@
+$lt,$eq,$ne,$gt,$gte,$lte,$in, $nin,$size, $type,$elemMatch
+regular expression,$or,$and,$not,$exists
+
+-----to find all movies with rating=5, display names and rating
+db.movie.find({rating:5},{name:1,rating:1})
+-----to find all movies with price=200, display names and rating
+db.movie.find({price:200},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200, display names and rating
+db.movie.find({price:{$gt:200}},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200, display names and rating
+db.movie.find({price:{$gt:200}},{name:1,rating:1,price:1,_id:0})
+-----to find all movies with price>200,and rating >=3
+---- display names and rating
+price:{$gt:200}
+rating:{$gte:3}
+db.movie.find({price:{$gt:200},rating:{$gte:3}},{name:1,rating:1,price:1,_id:0})
+----display all movies with price = either 200 or 250 or 350
+db.movie.find({price:{$in:[250,200,350]}},{name:1,rating:1,price:1,_id:0})
+
+----display all movies with price not = either 200 or 250 or 350
+db.movie.find({price:{$nin:[250,200,350]}},{name:1,rating:1,price:1,_id:0})
+
+-----display all movies with ticket_no>200
+db.movie.find({ticket_no:{$gt:200}})
+
+
+

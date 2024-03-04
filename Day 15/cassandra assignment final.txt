@@ -1,0 +1,24 @@
+1. create a customer table to store following columns, customer id as primary key
+customer id, name, mobile set<int>,email tuple(text,text),purchaseveh map<text,int>,hoobies list<text>
+2. insert 5 records with customer id 11,12,13,14,15
+3. add hoobies design, drawing for custid=12
+4. remove hoobies design for custid=12
+5. update name of customer with id 11
+6. modify emails of customer 13
+7. add and delete one of the purchase vehicle
+8. add and delete one of the hobbies for customer 14
+9.change the quantity of vehicle activa from customer id 15
+
+Q2create a batch to add 2 records in customer table, delete record for customer 13 
+and delete only email from customer 11
+and update emails for customer 12
+
+
+Q3. create type department to store deptno, dname
+a. 
+change the type department to add dloc in it.
+
+create table emp to store eid, ename, sal, projects List<text>, dept department 
+add 5 records in the table
+
+b. create index on ename column

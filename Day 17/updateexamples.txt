@@ -1,0 +1,108 @@
+------to update data in mongodb
+
+update: this function is used to to update one or more documents
+updateOne : this is used to update only one matching document
+updateMany:this is used to update all matching documnet
+
+updateMany({query},{update action})
+updateOne({query},{update action})
+update({query},
+      {update action},
+	  {multi:true,upsert:true,arrayFilters:[]})
+
+what update operation
+1. add new key-value pair--- $set, $min, $max
+2. delete existing key------ $unset
+3. overwrite the value of the key --- $set,$min, $max
+4. increase or decrease the value of key --- $inc, $mul 
+5. to assign current date ---$currentDate
+6. to rename the existing key ---$rename
+
+If there is a array of values
+1. add a new value array  $push---> $each, $position
+2. delete a value from array  $pop,$pull
+3. overwrrite the value    $,$[],$[identifier]
+
+upsert----either update or insert
+
+-----to increase the  rating by 2, 
+----and overwrite ticke_no value by 100
+db.movie.update({name:/^[Kk]/},{$inc:{rating:2},
+$set:{ticket_no:100}},{multi:true})
+
+----to update price by 10% for all movies 
+----with name starts with p
+db.movie.updateMany({name:/^p/},{$mul:{price:1.10}})
+
+----to add one actor at the end of actor array
+db.movie.update({name:/^[Pp]/},{$push:{actor:'pppp'} },{multi:true})
+
+---to add many actors at the end
+db.movie.update({name:/^[Pp]/},{$push:{actor:{$each:['pppp','qqqq']}} },{multi:true})
+
+----to add many actors at the given position
+db.movie.update({name:/^[Pp]/},
+{$push:{actor:{$each:['pppp','qqqq'],$position:0}} },{multi:true})
+
+---to delete the actor from the end of the actor array
+---for all movies with name starts with p
+
+---in $pop 1 indicates delete from the end. and -1 
+---indicates delete from the begining
+db.movie.updateMany({name:/^p/},{$pop:{actor:1}})
+
+-----to increase all the values of marks array in student 
+collection whose name starts with R
+db.student.updateMany({name:/^R/},{$inc:{'marks.$[]':2}})
+
+
+---to increase a value from marks array which is > 90 by 2
+fro al student whose name starts with R
+db.student.updateMany({name:/^R/,marks:{$gt:90}},
+{$inc:{'marks.$':2}})
+
+----to incease all the marks which are >90 by 2
+---for all students with name starts with R
+ db.student.update({ name: /^R/ }, 
+ { $inc: { 'marks.$[elem]': 2 } },
+ {arrayFilters:[{elem:{$gt:90}}],multi:true});
+ 
+ ----to change the adress to baner, if the current name is 
+ rajas
+ db.student.update({name:'rajas'},{$set:{address:'Baner'}},
+ {upsert:true})
+
+-------to change the key lastmodified with changed
+db.movie.update({name:'kahani'},
+{$rename:{'lastmodified':'changed'}})
+
+
+
+db.mystudents.insertMany( [
+   {
+      "_id" : 1,
+      "grades" : [
+         { "grade" : 80, "mean" : 75, "std" : 6 },
+         { "grade" : 85, "mean" : 90, "std" : 4 },
+         { "grade" : 85, "mean" : 85, "std" : 6 }
+      ]
+   },
+   {
+      "_id" : 2,
+      "grades" : [
+         { "grade" : 90, "mean" : 75, "std" : 6 },
+         { "grade" : 87, "mean" : 90, "std" : 3 },
+         { "grade" : 85, "mean" : 85, "std" : 4 }
+      ]
+   }
+] )
+
+-----update all grades for all documents for which the 
+---std is 6
+db.mystudents.update({'grades.std':6},
+{$inc:{'grades.$.grade':2}},{multi:true})
+
+
+db.mystudents.update({},
+{$inc:{'grades.$[elem].grade':2},
+{arrayFilters:[{'elem.std':{$gt:4}}],multi:true})

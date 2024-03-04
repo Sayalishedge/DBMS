@@ -1,0 +1,209 @@
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use acts0923
+Database changed
+mysql> delimiter //
+mysql> delimiter //
+mysql> create procedure getcnt(in dno int,out cnt int)
+    -> begin
+    ->   select count(*) into cnt
+    ->   from emp
+    ->   deptno=dno
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '=dno
+end' at line 5
+mysql> delimiter //
+mysql> create procedure getcnt(in dno int,out cnt int)
+    -> begin
+    ->   select count(*) into cnt
+    ->   from emp
+    ->   where deptno=dno
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'end' at line 6
+mysql> delimiter //
+mysql> create procedure getcnt(in dno int,out cnt int)
+    -> begin
+    ->   select count(*) into cnt
+    ->   from emp
+    ->   where deptno=dno;
+    -> end//
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> call getcnt(10,@c);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @c;
+    -> //
++------+
+| @c   |
++------+
+|    6 |
++------+
+1 row in set (0.00 sec)
+
+mysql> delimiter ;
+mysql> call getcnt(10,@c);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> call getcnt(20,@c);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @c;
++------+
+| @c   |
++------+
+|    6 |
++------+
+1 row in set (0.00 sec)
+
+mysql> call getcnt(30,@c);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @c;
++------+
+| @c   |
++------+
+|    6 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where deptno=10;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select count(*)
+    -> from emp
+    -> where deptno=20;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure insert_dept(dno int,dnm varchar(20),dl varchar(20))
+    -> begin
+    ->    insert into dept values(dno,dnm,dl);
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> delimiter ;
+mysql> call insert_dept(50,'purchase','pune');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from dept;
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | purchase   | pune     |
++--------+------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> drop procedure insert_rec;
+ERROR 1305 (42000): PROCEDURE acts0923.insert_rec does not exist
+mysql> drop procedure insert_dept;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure insert_dept(dno int,dnm varchar(20),dl varchar(20))
+    -> begin
+    ->    insert into dept values(dno,dnm,dl);
+    ->    select *
+    ->    from dept;
+    -> end//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> delimiter ;
+mysql> call insert_dept(51,'purchase','pune');
++--------+------------+----------+
+| DEPTNO | DNAME      | LOC      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
+|     50 | purchase   | pune     |
+|     51 | purchase   | pune     |
++--------+------------+----------+
+6 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter //
+mysql> create procedure gettotal(in out tot int)
+    -> begin
+    -> declare cnt int;
+    -> select count(*) into cnt
+    -> from emp
+    -> where deptno=10;
+    -> set tot=tot+cnt;
+    -> select tot;
+    ->
+    -> end//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'out tot int)
+begin
+declare cnt int;
+select count(*) into cnt
+from emp
+where dept' at line 1
+mysql> create procedure gettotal(inout tot int)
+    -> begin
+    -> declare cnt int;
+    -> select count(*) into cnt
+    -> from emp
+    -> where deptno=10;
+    -> set tot=tot+cnt;
+    -> select tot;
+    ->
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> set @num=5;
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> call gettotal(@num);
++------+
+| tot  |
++------+
+|   11 |
++------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select @num;
++------+
+| @num |
++------+
+|   11 |
++------+
+1 row in set (0.00 sec)
+
+mysql>

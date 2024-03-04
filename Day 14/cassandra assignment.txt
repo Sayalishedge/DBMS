@@ -1,0 +1,22 @@
+
+ 
+Cassandra assignmnet 1:
+1. create a table product to store pid, pname, qty, price,features
+2. add 5 records into the table
+3. create a table books  to store bid, bname, authors, price
+2. add 5 records into the table
+
+
+
+Example
+1. create customer type cno,cname,mobile
+1. create table account(acno int ,type varchar,balance double,cinfo customer,chequebknum list<int>)
+2. insert 5 records into account 5 records
+3. transfer funds 50000 from ac/no 111 to a/c no 333 and a then transfer 10000 Rs amt from 333 to 4444
+4. add new column in account table interest
+5. update all the values of interest to 4
+6. display all the data on the screeen
+7. add new cheque book number in the list of acno 111
+
+
+
